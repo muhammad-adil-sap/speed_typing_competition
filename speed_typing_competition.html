@@ -394,14 +394,15 @@
 
         // Firebase Configuration setup
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'typespeed-app-default';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "demo-key",
-            authDomain: "demo.firebaseapp.com",
-            projectId: "demo-project",
-            storageBucket: "demo.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:123456"
-        };
+const firebaseConfig = {
+  apiKey: "AIzaSyAisClxG32wAr4GC8Dr6AVDroiA2IW56LI",
+  authDomain: "typingcompetition-d09bd.firebaseapp.com",
+  projectId: "typingcompetition-d09bd",
+  storageBucket: "typingcompetition-d09bd.firebasestorage.app",
+  messagingSenderId: "943884726644",
+  appId: "1:943884726644:web:5a77528d7289a2f7027c21",
+  measurementId: "G-CGDHRVDYM5"
+};
 
         const firebaseApp = initializeApp(firebaseConfig);
         const auth = getAuth(firebaseApp);
