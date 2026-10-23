@@ -102,20 +102,20 @@
                         Master <span class="text-cyan-400">Code & Speed Typing</span>
                     </h2>
                     <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-                        Select your preferred duration or practice untimed. Choose developer syntax across 9 languages or test your speed.
+                        Continuous typing mode: keep writing code or text until your selected timer runs out!
                     </p>
                 </div>
 
-                <!-- Global Timer Configuration Toolbar -->
+                <!-- Global Timer Configuration Toolbar (60s+) -->
                 <div class="max-w-md mx-auto bg-slate-800/90 border border-slate-700 rounded-2xl p-4 flex items-center justify-between shadow-xl">
                     <div class="flex items-center gap-2 text-sm text-slate-300 font-semibold">
-                        <i class="fa-solid fa-stopwatch text-amber-400"></i> Session Timer:
+                        <i class="fa-solid fa-stopwatch text-amber-400"></i> Session Duration:
                     </div>
                     <select id="global-timer-select" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-cyan-400 font-bold focus:outline-none focus:border-cyan-500">
-                        <option value="15">15 Seconds</option>
-                        <option value="30">30 Seconds</option>
-                        <option value="60" selected>60 Seconds</option>
-                        <option value="120">120 Seconds</option>
+                        <option value="60" selected>60 Seconds (1 min)</option>
+                        <option value="120">120 Seconds (2 min)</option>
+                        <option value="180">180 Seconds (3 min)</option>
+                        <option value="300">300 Seconds (5 min)</option>
                         <option value="0">Untimed / Practice</option>
                     </select>
                 </div>
@@ -129,7 +129,7 @@
                                 <i class="fa-solid fa-code"></i>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-1">Dev Code Mode</h3>
-                            <p class="text-sm text-slate-400">Practice 9 programming languages including JS, Python, TS, Rust, Go, SQL & SAP ABAP.</p>
+                            <p class="text-sm text-slate-400">Dynamic random code generation across 9 programming languages until timer expires.</p>
                         </div>
                         <div class="flex items-center text-cyan-400 font-semibold text-sm gap-2">
                             <span>Type Code</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
@@ -143,7 +143,7 @@
                                 <i class="fa-solid fa-robot"></i>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-1">Solo & AI Bots</h3>
-                            <p class="text-sm text-slate-400">Race against dynamic paragraphs and simulated AI bot racers based on your selected timer.</p>
+                            <p class="text-sm text-slate-400">Continuous paragraph typing against simulated AI bot racers based on your timer.</p>
                         </div>
                         <div class="flex items-center text-emerald-400 font-semibold text-sm gap-2">
                             <span>Race AI Bots</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
@@ -171,7 +171,7 @@
                                 <i class="fa-solid fa-file-import"></i>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-1">Custom Importer</h3>
-                            <p class="text-sm text-slate-400">Paste custom documentation, study notes, or favorite book passages to practice against.</p>
+                            <p class="text-sm text-slate-400">Paste custom documentation or source code to practice against continuously.</p>
                         </div>
                         <div class="flex items-center text-purple-400 font-semibold text-sm gap-2">
                             <span>Paste Custom Text</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
@@ -245,7 +245,7 @@
                 <!-- Main Typing Display -->
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden">
                     <div class="flex items-center justify-between text-xs text-slate-400 border-b border-slate-700/60 pb-3">
-                        <span><i class="fa-solid fa-keyboard mr-1 text-cyan-400"></i> Type below exactly as shown</span>
+                        <span><i class="fa-solid fa-keyboard mr-1 text-cyan-400"></i> Type code continuously until timer completes</span>
                         <span id="game-progress-text" class="font-mono">0 / 0 chars</span>
                     </div>
 
@@ -315,7 +315,7 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-        <p>TypeMaster Pro &bull; 9 Dev Languages &bull; Flexible Timer Engine &bull; AI Bot Racers</p>
+        <p>TypeMaster Pro &bull; Continuous Dev Code Generator &bull; Flexible Timers (60s+) &bull; AI Bot Racers</p>
     </footer>
 
     <!-- Firebase SDK Imports -->
@@ -340,28 +340,35 @@
         const db = getFirestore(firebaseApp);
         const googleProvider = new GoogleAuthProvider();
 
-        // 9 PROGRAMMING LANGUAGES CODE PRESETS
-        const CODE_PRESETS = {
+        // EXPANDED DYNAMIC CODE PRESETS FOR 9 LANGUAGES
+        const CODE_POOLS = {
             javascript: [
                 "const calculateWPM = (chars, errors, seconds) => Math.max(0, Math.round(((chars / 5) - errors) / (seconds / 60)));",
                 "async function fetchUserData(userId) { const res = await fetch(`/api/users/${userId}`); return res.json(); }",
-                "const [items, setItems] = useState([]); useEffect(() => { loadItems(); }, []);"
+                "const [items, setItems] = useState([]); useEffect(() => { loadItems(); }, []);",
+                "const debounce = (fn, delay) => { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => fn(...args), delay); }; };",
+                "const pipeline = data => data.filter(x => x.active).map(x => x.value).reduce((acc, curr) => acc + curr, 0);"
             ],
             python: [
                 "def calculate_metrics(keystrokes, errors, time_sec):\n    net_words = (keystrokes / 5) - errors\n    return max(0, round(net_words / (time_sec / 60)))",
-                "class UserProfile:\n    def __init__(self, username, wpm):\n        self.username = username\n        self.high_wpm = wpm"
+                "class UserProfile:\n    def __init__(self, username, wpm):\n        self.username = username\n        self.high_wpm = wpm",
+                "squares = [x**2 for x in range(20) if x % 2 == 0]",
+                "async def process_payload(data_queue):\n    while not data_queue.empty():\n        item = await data_queue.get()\n        print(f'Processing {item}')"
             ],
             typescript: [
                 "interface UserProfile { id: string; name: string; highWpm: number; isPro: boolean; }\nconst getUserBadge = (user: UserProfile): string => `Best: ${user.highWpm} WPM`;",
-                "type SyncPayload = { roomId: string; progress: number; updatedAt: number; };\nconst syncData = async (payload: SyncPayload): Promise<void> => { await db.collection('rooms').doc(payload.roomId).update(payload); };"
+                "type SyncPayload = { roomId: string; progress: number; updatedAt: number; };\nconst syncData = async (payload: SyncPayload): Promise<void> => { await updateDoc(docRef, payload); };",
+                "class GenericRepository<T> {\n    private items: T[] = [];\n    public add(item: T): void { this.items.push(item); }\n}"
             ],
             cplusplus: [
-                "#iostream>\nusing namespace std;\nint calculateWPM(int chars, int errors, int seconds) {\n    int net = (chars / 5) - errors;\n    return max(0, (net * 60) / seconds);\n}",
-                "class TypingArena {\nprivate:\n    int wpm;\npublic:\n    void setWPM(int speed) { wpm = speed; }\n};"
+                "using namespace std;\nint calculateWPM(int chars, int errors, int seconds) {\n    int net = (chars / 5) - errors;\n    return max(0, (net * 60) / seconds);\n}",
+                "class TypingArena {\nprivate:\n    int wpm;\npublic:\n    void setWPM(int speed) { wpm = speed; }\n};",
+                "vector<int> scores = { 45, 78, 92, 104 };\nsort(scores.begin(), scores.end(), greater<int>());"
             ],
             java: [
                 "public class TypingMetrics {\n    public static int calculateWPM(int chars, int errors, int seconds) {\n        int net = (chars / 5) - errors;\n        return Math.max(0, (net * 60) / seconds);\n    }\n}",
-                "List<String> activePlayers = new ArrayList<>();\nactivePlayers.add(\"Developer_101\");"
+                "List<String> activePlayers = new ArrayList<>();\nactivePlayers.add(\"Developer_101\");",
+                "public record UserDto(String id, String username, int wpm) {}"
             ],
             rust: [
                 "fn calculate_wpm(chars: usize, errors: usize, seconds: u64) -> u32 {\n    let net = (chars as i32 / 5) - errors as i32;\n    std::cmp::max(0, (net * 60) / seconds as i32) as u32\n}",
@@ -373,13 +380,22 @@
             ],
             sql: [
                 "SELECT u.user_id, u.user_name, MAX(m.wpm) AS top_wpm FROM users u JOIN matches m ON u.user_id = m.user_id GROUP BY u.user_id ORDER BY top_wpm DESC;",
-                "UPDATE user_progress SET unlocked_level = unlocked_level + 1 WHERE accuracy >= 85 AND user_id = '101';"
+                "UPDATE user_progress SET unlocked_level = unlocked_level + 1 WHERE accuracy >= 85 AND user_id = '101';",
+                "SELECT department, AVG(salary) AS avg_sal FROM employees GROUP BY department HAVING AVG(salary) > 75000;"
             ],
             abap: [
                 "SELECT * FROM zc_equipment_details INTO TABLE @DATA(lt_equipment) WHERE status = 'ACTIVE'.",
-                "CLASS zcl_typing_engine DEFINITION PUBLIC FINAL CREATE PUBLIC.\n  PUBLIC SECTION.\n    METHODS calculate_wpm IMPORTING iv_chars TYPE i RETURNING VALUE(rv_wpm) TYPE i.\nENDCLASS."
+                "CLASS zcl_typing_engine DEFINITION PUBLIC FINAL CREATE PUBLIC.\n  PUBLIC SECTION.\n    METHODS calculate_wpm IMPORTING iv_chars TYPE i RETURNING VALUE(rv_wpm) TYPE i.\nENDCLASS.",
+                "DATA(lt_filtered) = VALUE string_table( FOR <wa> IN gt_data WHERE ( status = 'O' ) ( <wa>-name ) )."
             ]
         };
+
+        const SOLO_PARAGRAPHS = [
+            "Technology connects software developers across global networks in real time. Building high performance applications requires solid system architecture, code precision, and instant data synchronization.",
+            "Keyboard mastery is an essential skill in modern computing. Developing muscular memory allows writers and developers to transpose thoughts into digital text effortlessly and accurately.",
+            "In competitive typing matches, balance is key. Pushing for high speed without keeping errors under control will severely penalize your final net words per minute calculation.",
+            "Algorithmic efficiency is fundamentally evaluated using Big-O notation. Quantifying time complexity ensures scalable data structures withstand high throughput requirements under load."
+        ];
 
         const LESSONS = [
             { id: 1, title: "Lesson 1: Home Row (F & J)", keys: "f j", words: ["ff", "jj", "fjfj", "jffj", "fj", "jf"] },
@@ -413,6 +429,10 @@
                 this.aiBotInterval = null;
                 this.isMatchActive = false;
                 this.startTime = null;
+
+                // Continuous Typing Accumulators across snippets
+                this.totalCharsTypedAcrossSnippets = 0;
+                this.totalErrorsAcrossSnippets = 0;
 
                 this.keyErrors = JSON.parse(localStorage.getItem('typemaster_key_errors') || '{}');
                 this.aiBots = [
@@ -558,6 +578,19 @@
                 return selectEl ? parseInt(selectEl.value) : 60;
             }
 
+            getNextSnippet() {
+                if (this.currentMode === 'code') {
+                    const pool = CODE_POOLS[this.currentLang] || CODE_POOLS.javascript;
+                    return pool[Math.floor(Math.random() * pool.length)];
+                } else if (this.currentMode === 'solo') {
+                    return SOLO_PARAGRAPHS[Math.floor(Math.random() * SOLO_PARAGRAPHS.length)];
+                } else if (this.currentMode === 'custom') {
+                    // For custom, cycle back through the custom text or repeat
+                    return this.customTextPool || this.targetText;
+                }
+                return this.targetText;
+            }
+
             // --- DEV CODE TYPING MODE ---
             startCodeTypingMode() {
                 this.stopGameIntervals();
@@ -568,9 +601,7 @@
                 document.getElementById('code-lang-selector').classList.remove('hidden');
                 document.getElementById('ai-bots-wrapper').classList.add('hidden');
 
-                const pool = CODE_PRESETS[this.currentLang] || CODE_PRESETS.javascript;
-                this.targetText = pool[Math.floor(Math.random() * pool.length)];
-
+                this.targetText = this.getNextSnippet();
                 this.initGameplaySession();
             }
 
@@ -589,7 +620,7 @@
                 document.getElementById('code-lang-selector').classList.add('hidden');
                 document.getElementById('ai-bots-wrapper').classList.remove('hidden');
 
-                this.targetText = "Technology connects software developers across global networks in real time. Building high performance applications requires solid system architecture, code precision, and instant data synchronization.";
+                this.targetText = this.getNextSnippet();
                 
                 this.aiBots = [
                     { name: 'Senior Dev Bot 🤖', targetWpm: 70, progress: 0 },
@@ -605,7 +636,7 @@
                     if (!this.isMatchActive) return;
                     this.aiBots.forEach(bot => {
                         const charsPerSec = (bot.targetWpm * 5) / 60;
-                        const addedPct = (charsPerSec / this.targetText.length) * 100;
+                        const addedPct = (charsPerSec / 500) * 100; // continuous virtual progress
                         bot.progress = Math.min(100, Math.round(bot.progress + addedPct));
                     });
                     this.renderAIBots();
@@ -637,6 +668,7 @@
                 this.stopGameIntervals();
                 this.currentMode = 'custom';
                 this.selectedTimerDuration = this.getSelectedTimer();
+                this.customTextPool = text;
                 this.targetText = text;
 
                 document.getElementById('game-mode-title').innerText = "Custom Imported Run";
@@ -689,6 +721,8 @@
             initGameplaySession() {
                 this.userInput = "";
                 this.matchTimer = this.selectedTimerDuration;
+                this.totalCharsTypedAcrossSnippets = 0;
+                this.totalErrorsAcrossSnippets = 0;
                 this.totalKeyStrokes = 0;
                 this.errorCount = 0;
                 this.isMatchActive = true;
@@ -741,9 +775,17 @@
 
                 this.renderTypingDisplay();
                 this.calculateMetrics();
+
+                // Continuous Typing Check: If current snippet is completed, roll over to the next snippet seamlessly!
                 if (val.length >= this.targetText.length) {
-                    this.stopGameIntervals();
-                    this.endMatch();
+                    this.totalCharsTypedAcrossSnippets += this.userInput.length;
+                    this.totalErrorsAcrossSnippets += this.errorCount;
+
+                    this.targetText = this.getNextSnippet();
+                    this.userInput = "";
+                    this.errorCount = 0;
+                    document.getElementById('game-hidden-input').value = "";
+                    this.renderTypingDisplay();
                 }
             }
 
@@ -766,21 +808,29 @@
                     }
                 }
                 display.innerHTML = html;
-                document.getElementById('game-progress-text').innerText = `${this.userInput.length} / ${this.targetText.length} chars`;
+                document.getElementById('game-progress-text').innerText = `Snippet progress: ${this.userInput.length} / ${this.targetText.length}`;
             }
 
             calculateMetrics() {
+                const currentSnippetChars = this.userInput.length;
+                const currentSnippetErrors = this.errorCount;
+
+                const totalChars = this.totalCharsTypedAcrossSnippets + currentSnippetChars;
+                const totalErrs = this.totalErrorsAcrossSnippets + currentSnippetErrors;
+
                 const secs = this.matchTimer === 0 ? Math.max(1, (Date.now() - this.startTime) / 1000) : Math.max(0.1, (this.selectedTimerDuration - this.matchTimer));
                 const mins = secs / 60;
-                const typedWords = this.userInput.length / 5;
+                const typedWords = totalChars / 5;
                 const rawWpm = Math.round(typedWords / mins);
-                const netWpm = Math.max(0, Math.round((typedWords - this.errorCount) / mins));
-                const accuracy = this.totalKeyStrokes > 0 ? Math.max(0, Math.round(((this.totalKeyStrokes - this.errorCount) / this.totalKeyStrokes) * 100)) : 100;
+                const netWpm = Math.max(0, Math.round((typedWords - totalErrs) / mins));
+                const accuracy = this.totalKeyStrokes > 0 ? Math.max(0, Math.round(((this.totalKeyStrokes - this.totalKeyStrokes) + (this.totalKeyStrokes - totalErrs) / this.totalKeyStrokes) * 100)) : 100;
+                // Simplified safe accuracy calculation
+                const cleanAccuracy = this.totalKeyStrokes > 0 ? Math.max(0, Math.round(((this.totalKeyStrokes - (this.totalErrorsAcrossSnippets + this.errorCount)) / this.totalKeyStrokes) * 100)) : 100;
 
                 document.getElementById('game-wpm').innerText = netWpm;
-                document.getElementById('game-accuracy').innerText = `${accuracy}%`;
-                document.getElementById('game-errors').innerText = this.errorCount;
-                return { netWpm, rawWpm, accuracy };
+                document.getElementById('game-accuracy').innerText = `${cleanAccuracy}%`;
+                document.getElementById('game-errors').innerText = (this.totalErrorsAcrossSnippets + this.errorCount);
+                return { netWpm, rawWpm, accuracy: cleanAccuracy };
             }
 
             renderHeatmap() {
@@ -810,13 +860,13 @@
                 document.getElementById('res-net-wpm').innerText = netWpm;
                 document.getElementById('res-raw-wpm').innerText = rawWpm;
                 document.getElementById('res-accuracy').innerText = `${accuracy}%`;
-                document.getElementById('res-errors').innerText = this.errorCount;
+                document.getElementById('res-errors').innerText = (this.totalErrorsAcrossSnippets + this.errorCount);
 
                 const secPanel = document.getElementById('results-secondary-panel');
                 secPanel.innerHTML = `
                     <div class="w-16 h-16 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-3xl"><i class="fa-solid fa-chart-line"></i></div>
-                    <h3 class="text-2xl font-bold text-white">Match Overview</h3>
-                    <p class="text-slate-400 text-sm">Target WPM: ${netWpm} | Key Accuracy: ${accuracy}%</p>
+                    <h3 class="text-2xl font-bold text-white">Continuous Session Overview</h3>
+                    <p class="text-slate-400 text-sm">Net Speed: ${netWpm} WPM | Overall Accuracy: ${accuracy}%</p>
                 `;
 
                 this.switchScreen('results');
