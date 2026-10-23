@@ -12,21 +12,11 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#f0fdf4',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            cyan: '#06b6d4',
-                            purple: '#a855f7',
-                        },
+                        brand: { 50: '#f0fdf4', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', cyan: '#06b6d4', purple: '#a855f7' },
                         darkbg: '#0f172a',
                         cardbg: '#1e293b',
                     },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Fira Code', 'Courier New', 'monospace'],
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Fira Code', 'Courier New', 'monospace'] }
                 }
             }
         }
@@ -37,40 +27,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Prism Syntax Highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-        }
-        .caret-animate {
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #475569;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .caret-animate { animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
 <body class="min-h-screen bg-slate-900 text-slate-100 flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
@@ -96,18 +62,15 @@
             <!-- Navigation Controls -->
             <nav class="hidden md:flex items-center gap-2 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700/80 text-sm">
                 <button onclick="app.showHome()" class="px-3 py-1.5 rounded-lg font-medium transition text-cyan-400 bg-slate-700/60">Modes</button>
-                <button onclick="app.startSoloMode()" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-300 hover:text-white">Solo 60s</button>
+                <button onclick="app.startSoloMode()" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-300 hover:text-white">Solo Speed</button>
                 <button onclick="app.startCodeTypingMode()" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-300 hover:text-white">Dev Code</button>
                 <button onclick="app.startLearnMode()" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-300 hover:text-white">Tutor</button>
             </nav>
 
             <div class="flex items-center gap-3">
-                <!-- Mechanical Keyboard Sound Toggle -->
                 <button id="btn-sound-toggle" onclick="app.toggleSound()" title="Mechanical Keyboard Sound" class="p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 hover:text-cyan-400 transition">
                     <i class="fa-solid fa-volume-xmark"></i>
                 </button>
-
-                <!-- Auth Container -->
                 <div id="auth-state-container" class="flex items-center gap-2">
                     <button id="btn-google-login" onclick="app.loginWithGoogle()" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-2 transition shadow-md">
                         <i class="fa-brands fa-google text-rose-400"></i>
@@ -139,8 +102,22 @@
                         Master <span class="text-cyan-400">Code & Speed Typing</span>
                     </h2>
                     <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-                        Practice real developer syntax, race AI bots, analyze your keyboard accuracy heatmap, or battle friends in real-time!
+                        Select your preferred duration or practice untimed. Choose developer syntax across 9 languages or test your speed.
                     </p>
+                </div>
+
+                <!-- Global Timer Configuration Toolbar -->
+                <div class="max-w-md mx-auto bg-slate-800/90 border border-slate-700 rounded-2xl p-4 flex items-center justify-between shadow-xl">
+                    <div class="flex items-center gap-2 text-sm text-slate-300 font-semibold">
+                        <i class="fa-solid fa-stopwatch text-amber-400"></i> Session Timer:
+                    </div>
+                    <select id="global-timer-select" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-cyan-400 font-bold focus:outline-none focus:border-cyan-500">
+                        <option value="15">15 Seconds</option>
+                        <option value="30">30 Seconds</option>
+                        <option value="60" selected>60 Seconds</option>
+                        <option value="120">120 Seconds</option>
+                        <option value="0">Untimed / Practice</option>
+                    </select>
                 </div>
 
                 <!-- Mode Cards Grid -->
@@ -152,28 +129,28 @@
                                 <i class="fa-solid fa-code"></i>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-1">Dev Code Mode</h3>
-                            <p class="text-sm text-slate-400">Build muscle memory for syntax in JavaScript, Python, SQL, and SAP ABAP/RAP.</p>
+                            <p class="text-sm text-slate-400">Practice 9 programming languages including JS, Python, TS, Rust, Go, SQL & SAP ABAP.</p>
                         </div>
                         <div class="flex items-center text-cyan-400 font-semibold text-sm gap-2">
                             <span>Type Code</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
                         </div>
                     </div>
 
-                    <!-- Solo 60s Speed Test Card -->
+                    <!-- Solo Speed & AI Bots -->
                     <div onclick="app.startSoloMode()" class="cursor-pointer bg-slate-800/80 border border-slate-700 hover:border-emerald-500 transition-all rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6 group">
                         <div>
                             <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
                                 <i class="fa-solid fa-robot"></i>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-1">Solo & AI Bots</h3>
-                            <p class="text-sm text-slate-400">Race 60-second speed matches against dynamic paragraphs and simulated AI bot racers.</p>
+                            <p class="text-sm text-slate-400">Race against dynamic paragraphs and simulated AI bot racers based on your selected timer.</p>
                         </div>
                         <div class="flex items-center text-emerald-400 font-semibold text-sm gap-2">
                             <span>Race AI Bots</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
                         </div>
                     </div>
 
-                    <!-- Learn Touch Typing Card -->
+                    <!-- Typing Tutor -->
                     <div onclick="app.startLearnMode()" class="cursor-pointer bg-slate-800/80 border border-slate-700 hover:border-amber-500 transition-all rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6 group">
                         <div>
                             <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
@@ -187,7 +164,7 @@
                         </div>
                     </div>
 
-                    <!-- Custom Quote Importer Card -->
+                    <!-- Custom Importer -->
                     <div onclick="app.openCustomImporter()" class="cursor-pointer bg-slate-800/80 border border-slate-700 hover:border-purple-500 transition-all rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6 group">
                         <div>
                             <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
@@ -210,21 +187,15 @@
                         </h3>
                         <button onclick="app.resetHeatmap()" class="text-xs text-slate-400 hover:text-rose-400 transition">Reset Analytics</button>
                     </div>
-                    <p class="text-xs text-slate-400 mb-4">Keys highlighted in red/amber indicate frequent typing mistakes across your matches:</p>
-                    <div id="heatmap-keyboard" class="grid grid-cols-10 gap-1.5 max-w-2xl mx-auto text-center font-mono text-xs">
-                        <!-- Rendered dynamically -->
-                    </div>
+                    <div id="heatmap-keyboard" class="grid grid-cols-10 gap-1.5 max-w-2xl mx-auto text-center font-mono text-xs"></div>
                 </div>
             </div>
 
-            <!-- Custom Importer Modal Screen -->
+            <!-- Custom Importer Modal -->
             <div id="screen-custom-import" class="hidden space-y-6 max-w-2xl mx-auto">
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 space-y-4 shadow-2xl">
-                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-file-import text-purple-400"></i> Import Custom Practice Text
-                    </h3>
-                    <p class="text-sm text-slate-400">Paste any snippet, article, or source code below to run a custom typing session:</p>
-                    <textarea id="input-custom-text" rows="6" placeholder="Paste your custom text or code here..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm font-mono focus:outline-none focus:border-purple-500 text-slate-200 custom-scrollbar"></textarea>
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2"><i class="fa-solid fa-file-import text-purple-400"></i> Import Custom Practice Text</h3>
+                    <textarea id="input-custom-text" rows="6" placeholder="Paste custom text or code here..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm font-mono focus:outline-none focus:border-purple-500 text-slate-200 custom-scrollbar"></textarea>
                     <div class="flex justify-end gap-3">
                         <button onclick="app.showHome()" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 text-sm">Cancel</button>
                         <button onclick="app.startCustomSession()" class="px-6 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm transition">Start Custom Run</button>
@@ -234,14 +205,21 @@
 
             <!-- ACTIVE GAMEPLAY SCREEN -->
             <div id="screen-game" class="hidden space-y-6">
-                <div class="flex items-center justify-between bg-slate-800/80 border border-slate-700 rounded-xl px-6 py-3">
+                <div class="flex items-center justify-between bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 flex-wrap gap-3">
                     <button onclick="app.showHome()" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg text-slate-300 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Quit to Menu</button>
-                    <div id="game-mode-title" class="text-cyan-400 font-bold text-sm uppercase tracking-wider">Solo 60s Speed Test</div>
-                    <div id="code-lang-selector" class="hidden flex gap-2">
-                        <button onclick="app.selectLanguage('javascript')" class="text-xs bg-slate-700 hover:bg-cyan-600 px-2.5 py-1 rounded text-white">JS</button>
-                        <button onclick="app.selectLanguage('python')" class="text-xs bg-slate-700 hover:bg-cyan-600 px-2.5 py-1 rounded text-white">Python</button>
-                        <button onclick="app.selectLanguage('sql')" class="text-xs bg-slate-700 hover:bg-cyan-600 px-2.5 py-1 rounded text-white">SQL</button>
-                        <button onclick="app.selectLanguage('abap')" class="text-xs bg-slate-700 hover:bg-cyan-600 px-2.5 py-1 rounded text-white">SAP ABAP</button>
+                    <div id="game-mode-title" class="text-cyan-400 font-bold text-sm uppercase tracking-wider">Dev Code Practice</div>
+                    
+                    <!-- Language Switcher Bar -->
+                    <div id="code-lang-selector" class="hidden flex flex-wrap gap-1">
+                        <button onclick="app.selectLanguage('javascript')" class="text-[11px] bg-slate-700 hover:bg-cyan-600 px-2 py-1 rounded text-white">JS</button>
+                        <button onclick="app.selectLanguage('python')" class="text-[11px] bg-slate-700 hover:bg-cyan-600 px-2 py-1 rounded text-white">Python</button>
+                        <button onclick="app.selectLanguage('typescript')" class="text-[11px] bg-slate-700 hover:bg-cyan-600 px-2 py-1 rounded text-white">TS</button>
+                        <button onclick="app.selectLanguage('cplusplus')" class="text-[11px] bg-slate-700 hover:bg-cyan-600 px-2 py-1 rounded text-white">C++</button>
+                        <button onclick="app.selectLanguage('java')" class="text-[11px] bg-slate-700 hover:bg-cyan-600 px-2 py-1 rounded text-white">Java</button>
+                        <button onclick="app.selectLanguage('rust')" class="text-[11px] bg-slate-700 hover:bg-cyan-600 px-2 py-1 rounded text-white">Rust</button>
+                        <button onclick="app.selectLanguage('go')" class="text-[11px] bg-slate-700 hover:bg-cyan-600 px-2 py-1 rounded text-white">Go</button>
+                        <button onclick="app.selectLanguage('sql')" class="text-[11px] bg-slate-700 hover:bg-cyan-600 px-2 py-1 rounded text-white">SQL</button>
+                        <button onclick="app.selectLanguage('abap')" class="text-[11px] bg-slate-700 hover:bg-cyan-600 px-2 py-1 rounded text-white">SAP ABAP</button>
                     </div>
                 </div>
 
@@ -264,16 +242,15 @@
                     </div>
                 </div>
 
-                <!-- Main Typing Interactive Display -->
+                <!-- Main Typing Display -->
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden">
                     <div class="flex items-center justify-between text-xs text-slate-400 border-b border-slate-700/60 pb-3">
-                        <span><i class="fa-solid fa-keyboard mr-1 text-cyan-400"></i> Type code/text below exactly as shown</span>
+                        <span><i class="fa-solid fa-keyboard mr-1 text-cyan-400"></i> Type below exactly as shown</span>
                         <span id="game-progress-text" class="font-mono">0 / 0 chars</span>
                     </div>
 
-                    <div id="typing-text-display" class="font-mono text-lg sm:text-2xl leading-relaxed sm:leading-loose max-h-56 overflow-y-auto custom-scrollbar p-4 bg-slate-900/90 rounded-xl border border-slate-800 select-none tracking-wide text-slate-500 whitespace-pre-wrap break-words"></div>
+                    <div id="typing-text-display" class="font-mono text-lg sm:text-xl leading-relaxed sm:leading-loose max-h-56 overflow-y-auto custom-scrollbar p-4 bg-slate-900/90 rounded-xl border border-slate-800 select-none tracking-wide text-slate-500 whitespace-pre-wrap break-words"></div>
 
-                    <!-- Hidden Real Input -->
                     <input type="text" id="game-hidden-input" class="absolute opacity-0 pointer-events-none -z-10" autocomplete="off" autocapitalize="off" spellcheck="false">
 
                     <div id="focus-prompt" onclick="app.focusTypingInput()" class="cursor-pointer bg-slate-900/80 hover:bg-slate-900 border border-cyan-500/30 rounded-xl py-3 px-4 text-center text-sm text-cyan-400 flex items-center justify-center gap-2">
@@ -281,7 +258,7 @@
                     </div>
                 </div>
 
-                <!-- Simulated AI Bots Competitor Dashboard -->
+                <!-- AI Bots Competitors -->
                 <div id="ai-bots-wrapper" class="hidden bg-slate-800/60 border border-slate-700 rounded-2xl p-5 space-y-4">
                     <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-robot text-emerald-400"></i> AI Competitor Bots Progress
@@ -308,22 +285,20 @@
                                 <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Net WPM</span><span id="res-net-wpm" class="text-2xl font-mono font-bold text-cyan-400">0</span></div>
                                 <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Raw WPM</span><span id="res-raw-wpm" class="text-lg font-mono font-semibold text-slate-300">0</span></div>
                                 <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Accuracy</span><span id="res-accuracy" class="text-2xl font-mono font-bold text-emerald-400">0%</span></div>
-                                <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Total Key Errors</span><span id="res-errors" class="text-sm font-mono text-rose-400">0</span></div>
+                                <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Total Errors</span><span id="res-errors" class="text-sm font-mono text-rose-400">0</span></div>
                             </div>
                         </div>
                         <div class="space-y-3 pt-4 border-t border-slate-700">
                             <button onclick="app.restartCurrentMode()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition shadow-lg">Run Again</button>
-                            <button onclick="app.showHome()" class="w-full border border-slate-700 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 px-4 rounded-xl text-sm transition">Back to Hub</button>
+                            <button onclick="app.showHome()" class="w-full border border-slate-700 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 px-4 rounded-xl transition">Back to Hub</button>
                         </div>
                     </div>
 
-                    <div id="results-secondary-panel" class="md:col-span-2 bg-slate-800/80 border border-slate-700 rounded-2xl p-6 flex flex-col justify-center items-center text-center space-y-4">
-                        <!-- Populated dynamically -->
-                    </div>
+                    <div id="results-secondary-panel" class="md:col-span-2 bg-slate-800/80 border border-slate-700 rounded-2xl p-6 flex flex-col justify-center items-center text-center space-y-4"></div>
                 </div>
             </div>
 
-            <!-- LEARN TUTOR SELECTION SCREEN -->
+            <!-- TUTOR SCREEN -->
             <div id="screen-learn-hub" class="hidden space-y-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -340,7 +315,7 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-        <p>TypeMaster Pro &bull; Developer Code Typing &bull; Mechanical Sound Synthesizer &bull; AI Bot Racers</p>
+        <p>TypeMaster Pro &bull; 9 Dev Languages &bull; Flexible Timer Engine &bull; AI Bot Racers</p>
     </footer>
 
     <!-- Firebase SDK Imports -->
@@ -365,7 +340,7 @@
         const db = getFirestore(firebaseApp);
         const googleProvider = new GoogleAuthProvider();
 
-        // DEV CODE PRESETS FOR JAVASCRIPT, PYTHON, SQL & SAP ABAP
+        // 9 PROGRAMMING LANGUAGES CODE PRESETS
         const CODE_PRESETS = {
             javascript: [
                 "const calculateWPM = (chars, errors, seconds) => Math.max(0, Math.round(((chars / 5) - errors) / (seconds / 60)));",
@@ -375,6 +350,26 @@
             python: [
                 "def calculate_metrics(keystrokes, errors, time_sec):\n    net_words = (keystrokes / 5) - errors\n    return max(0, round(net_words / (time_sec / 60)))",
                 "class UserProfile:\n    def __init__(self, username, wpm):\n        self.username = username\n        self.high_wpm = wpm"
+            ],
+            typescript: [
+                "interface UserProfile { id: string; name: string; highWpm: number; isPro: boolean; }\nconst getUserBadge = (user: UserProfile): string => `Best: ${user.highWpm} WPM`;",
+                "type SyncPayload = { roomId: string; progress: number; updatedAt: number; };\nconst syncData = async (payload: SyncPayload): Promise<void> => { await db.collection('rooms').doc(payload.roomId).update(payload); };"
+            ],
+            cplusplus: [
+                "#iostream>\nusing namespace std;\nint calculateWPM(int chars, int errors, int seconds) {\n    int net = (chars / 5) - errors;\n    return max(0, (net * 60) / seconds);\n}",
+                "class TypingArena {\nprivate:\n    int wpm;\npublic:\n    void setWPM(int speed) { wpm = speed; }\n};"
+            ],
+            java: [
+                "public class TypingMetrics {\n    public static int calculateWPM(int chars, int errors, int seconds) {\n        int net = (chars / 5) - errors;\n        return Math.max(0, (net * 60) / seconds);\n    }\n}",
+                "List<String> activePlayers = new ArrayList<>();\nactivePlayers.add(\"Developer_101\");"
+            ],
+            rust: [
+                "fn calculate_wpm(chars: usize, errors: usize, seconds: u64) -> u32 {\n    let net = (chars as i32 / 5) - errors as i32;\n    std::cmp::max(0, (net * 60) / seconds as i32) as u32\n}",
+                "pub struct UserSession { pub id: String, pub wpm: u32 }\nimpl UserSession { fn new(id: &str) -> Self { Self { id: id.to_string(), wpm: 0 } } }"
+            ],
+            go: [
+                "package main\nimport \"fmt\"\nfunc calculateWPM(chars int, errors int, seconds int) int {\n\tnet := (chars / 5) - errors\n\treturn (net * 60) / seconds\n}",
+                "func syncProgress(roomId string, wpm int) {\n\tfmt.Printf(\"Room %s synced with WPM: %d\\n\", roomId, wpm)\n}"
             ],
             sql: [
                 "SELECT u.user_id, u.user_name, MAX(m.wpm) AS top_wpm FROM users u JOIN matches m ON u.user_id = m.user_id GROUP BY u.user_id ORDER BY top_wpm DESC;",
@@ -386,7 +381,6 @@
             ]
         };
 
-        // LESSONS FOR TUTOR
         const LESSONS = [
             { id: 1, title: "Lesson 1: Home Row (F & J)", keys: "f j", words: ["ff", "jj", "fjfj", "jffj", "fj", "jf"] },
             { id: 2, title: "Lesson 2: Home Row (D & K)", keys: "d f j k", words: ["dad", "fad", "add", "jdk", "kdf", "aff"] },
@@ -404,7 +398,7 @@
                 this.isGoogleUser = false;
                 this.soundEnabled = false;
 
-                this.currentMode = 'home'; // 'home', 'solo', 'code', 'learn', 'custom'
+                this.currentMode = 'home';
                 this.currentLang = 'javascript';
                 this.currentLessonId = 1;
                 this.unlockedLessonId = 1;
@@ -413,18 +407,16 @@
                 // Typing State
                 this.targetText = "";
                 this.userInput = "";
+                this.selectedTimerDuration = 60;
                 this.matchTimer = 60;
                 this.timerInterval = null;
                 this.aiBotInterval = null;
                 this.isMatchActive = false;
                 this.startTime = null;
 
-                // Heatmap key analytics dictionary
                 this.keyErrors = JSON.parse(localStorage.getItem('typemaster_key_errors') || '{}');
-
-                // Simulated AI Bots
                 this.aiBots = [
-                    { name: 'Senior Dev Bot 🤖', targetWpm: 75, progress: 0 },
+                    { name: 'Senior Dev Bot 🤖', targetWpm: 70, progress: 0 },
                     { name: 'Junior Dev Bot 🤖', targetWpm: 45, progress: 0 }
                 ];
 
@@ -434,11 +426,8 @@
                 this.initAudio();
             }
 
-            // Web Audio Synthesizer for Mechanical Keyboard Clicks
             initAudio() {
-                try {
-                    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                } catch(e){}
+                try { this.audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){}
             }
 
             playMechanicalClick() {
@@ -470,25 +459,21 @@
                         this.userId = user.uid;
                         this.isGoogleUser = true;
                         this.userName = user.displayName || 'Typist';
-
                         document.getElementById('btn-google-login').classList.add('hidden');
                         document.getElementById('user-profile-badge').classList.remove('hidden');
                         document.getElementById('user-profile-badge').classList.add('flex');
                         document.getElementById('display-user-name').innerText = this.userName;
                         document.getElementById('user-avatar').src = user.photoURL || 'https://via.placeholder.com/40';
-
                         await this.loadCloudUserData();
                     } else {
                         this.isGoogleUser = false;
                         document.getElementById('btn-google-login').classList.remove('hidden');
                         document.getElementById('user-profile-badge').classList.add('hidden');
                         document.getElementById('user-profile-badge').classList.remove('flex');
-
                         this.unlockedLessonId = parseInt(localStorage.getItem('typemaster_unlocked') || '1');
                         this.userHighWpm = parseInt(localStorage.getItem('typemaster_high_wpm') || '0');
                         document.getElementById('display-user-high-wpm').innerText = `Best: ${this.userHighWpm} WPM`;
-
-                        if (!user) signInAnonymously(auth).catch(e => console.warn(e));
+                        if (!user) signInAnonymously(auth).catch(e => {});
                     }
                     this.renderLessons();
                 });
@@ -556,17 +541,37 @@
                 this.switchScreen('home');
             }
 
+            stopGameIntervals() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+                if (this.aiBotInterval) {
+                    clearInterval(this.aiBotInterval);
+                    this.aiBotInterval = null;
+                }
+                this.isMatchActive = false;
+            }
+
+            getSelectedTimer() {
+                const selectEl = document.getElementById('global-timer-select');
+                return selectEl ? parseInt(selectEl.value) : 60;
+            }
+
             // --- DEV CODE TYPING MODE ---
             startCodeTypingMode() {
+                this.stopGameIntervals();
                 this.currentMode = 'code';
-                document.getElementById('game-mode-title').innerText = `Developer Code Practice (${this.currentLang.toUpperCase()})`;
+                this.selectedTimerDuration = this.getSelectedTimer();
+                
+                document.getElementById('game-mode-title').innerText = `Dev Code (${this.currentLang.toUpperCase()})`;
                 document.getElementById('code-lang-selector').classList.remove('hidden');
                 document.getElementById('ai-bots-wrapper').classList.add('hidden');
 
                 const pool = CODE_PRESETS[this.currentLang] || CODE_PRESETS.javascript;
                 this.targetText = pool[Math.floor(Math.random() * pool.length)];
 
-                this.initGameplaySession(true, 60);
+                this.initGameplaySession();
             }
 
             selectLanguage(lang) {
@@ -574,10 +579,13 @@
                 this.startCodeTypingMode();
             }
 
-            // --- SOLO SPEED & AI BOTS MODE ---
+            // --- SOLO & AI BOTS MODE ---
             startSoloMode() {
+                this.stopGameIntervals();
                 this.currentMode = 'solo';
-                document.getElementById('game-mode-title').innerText = "Solo Speed Test with AI Bots";
+                this.selectedTimerDuration = this.getSelectedTimer();
+
+                document.getElementById('game-mode-title').innerText = "Solo Speed & AI Bots";
                 document.getElementById('code-lang-selector').classList.add('hidden');
                 document.getElementById('ai-bots-wrapper').classList.remove('hidden');
 
@@ -588,7 +596,7 @@
                     { name: 'Junior Dev Bot 🤖', targetWpm: 45, progress: 0 }
                 ];
 
-                this.initGameplaySession(true, 60);
+                this.initGameplaySession();
                 this.startAIBotSimulation();
             }
 
@@ -621,19 +629,20 @@
             }
 
             // --- CUSTOM IMPORTER ---
-            openCustomImporter() {
-                this.switchScreen('custom-import');
-            }
+            openCustomImporter() { this.switchScreen('custom-import'); }
 
             startCustomSession() {
                 const text = document.getElementById('input-custom-text').value.trim();
                 if (!text) { this.showToast("Paste some text first!", "error"); return; }
+                this.stopGameIntervals();
                 this.currentMode = 'custom';
+                this.selectedTimerDuration = this.getSelectedTimer();
                 this.targetText = text;
+
                 document.getElementById('game-mode-title').innerText = "Custom Imported Run";
                 document.getElementById('code-lang-selector').classList.add('hidden');
                 document.getElementById('ai-bots-wrapper').classList.add('hidden');
-                this.initGameplaySession(true, 60);
+                this.initGameplaySession();
             }
 
             // --- TUTOR MODE ---
@@ -660,8 +669,11 @@
             }
 
             startLesson(id) {
+                this.stopGameIntervals();
                 this.currentMode = 'learn';
                 this.currentLessonId = id;
+                this.selectedTimerDuration = 0; // Untimed practice for tutor
+
                 const lesson = LESSONS.find(l => l.id === id);
                 let textArray = [];
                 for (let i = 0; i < 20; i++) textArray.push(lesson.words[Math.floor(Math.random() * lesson.words.length)]);
@@ -670,13 +682,13 @@
                 document.getElementById('game-mode-title').innerText = lesson.title;
                 document.getElementById('code-lang-selector').classList.add('hidden');
                 document.getElementById('ai-bots-wrapper').classList.add('hidden');
-                this.initGameplaySession(false);
+                this.initGameplaySession();
             }
 
             // --- UNIVERSAL SESSION ---
-            initGameplaySession(hasTimer = true, defaultSeconds = 60) {
+            initGameplaySession() {
                 this.userInput = "";
-                this.matchTimer = defaultSeconds;
+                this.matchTimer = this.selectedTimerDuration;
                 this.totalKeyStrokes = 0;
                 this.errorCount = 0;
                 this.isMatchActive = true;
@@ -689,21 +701,22 @@
                 this.renderTypingDisplay();
                 this.focusTypingInput();
 
-                if (hasTimer) {
+                if (this.matchTimer > 0) {
+                    document.getElementById('timer-label').innerText = "Time Remaining";
+                    document.getElementById('game-timer').innerText = `${this.matchTimer}s`;
                     this.timerInterval = setInterval(() => {
+                        if (!this.isMatchActive) return;
                         this.matchTimer--;
                         document.getElementById('game-timer').innerText = `${this.matchTimer}s`;
-                        if (this.matchTimer <= 0) { clearInterval(this.timerInterval); this.endMatch(); }
+                        if (this.matchTimer <= 0) {
+                            this.stopGameIntervals();
+                            this.endMatch();
+                        }
                     }, 1000);
                 } else {
+                    document.getElementById('timer-label').innerText = "Status";
                     document.getElementById('game-timer').innerText = "Practice";
                 }
-            }
-
-            stopGameIntervals() {
-                clearInterval(this.timerInterval);
-                clearInterval(this.aiBotInterval);
-                this.isMatchActive = false;
             }
 
             handleTypingInput(e) {
@@ -720,7 +733,6 @@
                     
                     if (typedChar !== targetChar) {
                         this.errorCount++;
-                        // Record key error for heatmap
                         const k = targetChar.toLowerCase();
                         this.keyErrors[k] = (this.keyErrors[k] || 0) + 1;
                         localStorage.setItem('typemaster_key_errors', JSON.stringify(this.keyErrors));
@@ -729,7 +741,10 @@
 
                 this.renderTypingDisplay();
                 this.calculateMetrics();
-                if (val.length >= this.targetText.length) this.endMatch();
+                if (val.length >= this.targetText.length) {
+                    this.stopGameIntervals();
+                    this.endMatch();
+                }
             }
 
             renderTypingDisplay() {
@@ -755,7 +770,7 @@
             }
 
             calculateMetrics() {
-                const secs = this.currentMode === 'learn' ? Math.max(1, (Date.now() - this.startTime) / 1000) : Math.max(0.1, (60 - this.matchTimer));
+                const secs = this.matchTimer === 0 ? Math.max(1, (Date.now() - this.startTime) / 1000) : Math.max(0.1, (this.selectedTimerDuration - this.matchTimer));
                 const mins = secs / 60;
                 const typedWords = this.userInput.length / 5;
                 const rawWpm = Math.round(typedWords / mins);
@@ -812,6 +827,7 @@
                 if (this.currentMode === 'code') this.startCodeTypingMode();
                 else if (this.currentMode === 'solo') this.startSoloMode();
                 else if (this.currentMode === 'custom') this.startCustomSession();
+                else if (this.currentMode === 'learn') this.startLesson(this.currentLessonId);
                 else this.showHome();
             }
 
