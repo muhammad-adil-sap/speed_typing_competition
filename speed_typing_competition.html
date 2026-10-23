@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TypeSpeed Multi - Network Typing Battle</title>
+    <title>TypeMaster Pro - Multiplayer, Solo & Learn Typing</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -52,7 +52,6 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
-        /* Custom scrollbar for typing area */
         .custom-scrollbar::-webkit-scrollbar {
             width: 8px;
         }
@@ -77,22 +76,29 @@
     <!-- Header Navigation -->
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="app.showLobby()">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="app.showHome()">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-green-500 flex items-center justify-center text-slate-900 font-extrabold text-xl shadow-lg shadow-cyan-500/20">
                     <i class="fa-solid fa-keyboard"></i>
                 </div>
                 <div>
                     <h1 class="font-extrabold text-lg sm:text-xl tracking-tight bg-gradient-to-r from-cyan-400 via-emerald-400 to-purple-400 bg-clip-text text-transparent">
-                        TypeSpeed<span class="text-xs ml-1 px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">LIVE</span>
+                        TypeMaster<span class="text-xs ml-1 px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">PRO</span>
                     </h1>
-                    <p class="text-xs text-slate-400 hidden sm:block">Shared-Network Speed Typing Arena</p>
+                    <p class="text-xs text-slate-400 hidden sm:block">Solo, Learn & Network Battle Arena</p>
                 </div>
             </div>
+
+            <!-- Mode Switcher Nav -->
+            <nav class="hidden md:flex items-center gap-2 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700/80 text-sm">
+                <button onclick="app.showHome()" id="nav-btn-home" class="px-4 py-1.5 rounded-lg font-medium transition text-cyan-400 bg-slate-700/60">Modes</button>
+                <button onclick="app.startSoloMode()" class="px-4 py-1.5 rounded-lg font-medium transition text-slate-300 hover:text-white">Solo 60s Test</button>
+                <button onclick="app.startLearnMode()" class="px-4 py-1.5 rounded-lg font-medium transition text-slate-300 hover:text-white">Learn Typing</button>
+            </nav>
 
             <div class="flex items-center gap-3">
                 <div id="user-badge" class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-user text-cyan-400"></i>
-                    <span id="display-user-name" class="font-semibold text-slate-200">Connecting...</span>
+                    <span id="display-user-name" class="font-semibold text-slate-200">Typist</span>
                 </div>
             </div>
         </div>
@@ -102,65 +108,58 @@
     <main class="flex-grow flex items-center justify-center p-4 sm:p-6 md:p-8">
         <div class="w-full max-w-5xl">
 
-            <!-- 1. LOBBY SCREEN -->
-            <div id="screen-lobby" class="space-y-8 transition-all duration-300">
+            <!-- 0. HOME HUB / MODE SELECTOR -->
+            <div id="screen-home" class="space-y-8 transition-all duration-300">
                 <div class="text-center space-y-3">
                     <h2 class="text-3xl sm:text-5xl font-black tracking-tight text-white">
-                        Multiplayer <span class="text-cyan-400">Typing Battles</span>
+                        Choose Your <span class="text-cyan-400">Typing Journey</span>
                     </h2>
                     <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-                        Create or join a room code to challenge friends on your network in real-time 60-second typing matches!
+                        Test your speed solo with infinite random paragraphs, master touch typing step-by-step, or battle friends on your network!
                     </p>
                 </div>
 
-                <!-- Action Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                    <!-- Create Room Card -->
-                    <div class="bg-slate-800/80 border border-slate-700 hover:border-cyan-500/50 transition-all rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6">
+                <!-- Mode Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <!-- Solo 60s Test Card -->
+                    <div onclick="app.startSoloMode()" class="cursor-pointer bg-slate-800/80 border border-slate-700 hover:border-cyan-500 transition-all rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6 group">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xl mb-4">
-                                <i class="fa-solid fa-plus-circle"></i>
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-stopwatch"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-white mb-1">Create Match Room</h3>
-                            <p class="text-sm text-slate-400">Host a new match. Invite teammates using a unique 6-digit room code.</p>
+                            <h3 class="text-xl font-bold text-white mb-1">Solo 60s Test</h3>
+                            <p class="text-sm text-slate-400">Test your speed against the clock with infinitely generated dynamic paragraphs every match.</p>
                         </div>
-
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Difficulty / Text Style</label>
-                                <select id="create-difficulty" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-500 text-slate-200">
-                                    <option value="medium">Standard English (Medium)</option>
-                                    <option value="easy">Simple Words (Easy)</option>
-                                    <option value="hard">Advanced Vocabulary & Punctuation (Hard)</option>
-                                    <option value="code">Developer Code Snippets (Expert)</option>
-                                </select>
-                            </div>
-
-                            <button onclick="app.createRoom()" class="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-cyan-500/20 active:scale-[0.98] flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-bolt"></i> Create New Room
-                            </button>
+                        <div class="flex items-center text-cyan-400 font-semibold text-sm gap-2">
+                            <span>Start Solo Run</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
                         </div>
                     </div>
 
-                    <!-- Join Room Card -->
-                    <div class="bg-slate-800/80 border border-slate-700 hover:border-purple-500/50 transition-all rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6">
+                    <!-- Learn Typing Card -->
+                    <div onclick="app.startLearnMode()" class="cursor-pointer bg-slate-800/80 border border-slate-700 hover:border-emerald-500 transition-all rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6 group">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center text-xl mb-4">
-                                <i class="fa-solid fa-right-to-bracket"></i>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-graduation-cap"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-white mb-1">Join Game Room</h3>
-                            <p class="text-sm text-slate-400">Enter an existing room code shared by your friend or colleague.</p>
+                            <h3 class="text-xl font-bold text-white mb-1">Learn Typing (Tutor)</h3>
+                            <p class="text-sm text-slate-400">Master touch typing progressively starting from home keys up to full keyboard mastery using real words.</p>
                         </div>
+                        <div class="flex items-center text-emerald-400 font-semibold text-sm gap-2">
+                            <span>Open Lessons</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </div>
 
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Room Code</label>
-                                <input type="text" id="join-room-code" placeholder="e.g. 8F2A91" uppercase maxlength="6" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 text-slate-200 uppercase tracking-widest font-mono text-center font-bold">
+                    <!-- Multiplayer Battle Card -->
+                    <div onclick="app.showMultiplayerLobby()" class="cursor-pointer bg-slate-800/80 border border-slate-700 hover:border-purple-500 transition-all rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6 group">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-users"></i>
                             </div>
-
-                            <button onclick="app.joinRoom()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-purple-600/20 active:scale-[0.98] flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-gamepad"></i> Join Room
-                            </button>
+                            <h3 class="text-xl font-bold text-white mb-1">Network Multiplayer</h3>
+                            <p class="text-sm text-slate-400">Host or join a room code to race friends on your shared local network in real-time matches.</p>
+                        </div>
+                        <div class="flex items-center text-purple-400 font-semibold text-sm gap-2">
+                            <span>Multiplayer Lobby</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
                         </div>
                     </div>
                 </div>
@@ -176,95 +175,136 @@
                 </div>
             </div>
 
-            <!-- 2. ROOM LOBBY / WAITING SCREEN -->
-            <div id="screen-room" class="hidden space-y-6">
-                <!-- Room Info Header -->
-                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4">
+            <!-- 1. MULTIPLAYER LOBBY SCREEN -->
+            <div id="screen-multiplayer-hub" class="hidden space-y-8">
+                <div class="flex items-center justify-between">
                     <div>
-                        <div class="flex items-center gap-3">
-                            <h2 class="text-2xl font-bold text-white">Match Lobby</h2>
-                            <span id="room-difficulty-tag" class="text-xs uppercase font-bold px-2.5 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">Medium</span>
-                        </div>
-                        <p class="text-sm text-slate-400 mt-1">Share this code with players on your network:</p>
+                        <h2 class="text-3xl font-black text-white">Multiplayer Arena</h2>
+                        <p class="text-slate-400 text-sm">Create or join rooms for live network matches</p>
                     </div>
-
-                    <!-- Room Code Display & Copy -->
-                    <div class="flex items-center gap-3 bg-slate-900 border border-slate-700 rounded-xl p-2 px-4">
-                        <div class="text-xs text-slate-400 uppercase font-semibold">Code:</div>
-                        <span id="current-room-code" class="text-2xl font-mono font-black tracking-wider text-cyan-400">------</span>
-                        <button onclick="app.copyRoomCode()" title="Copy Code" class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
+                    <button onclick="app.showHome()" class="text-xs bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-xl border border-slate-700 text-slate-300 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Modes</button>
                 </div>
 
-                <!-- Players Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 bg-slate-800/60 border border-slate-700 rounded-2xl p-6">
-                        <h3 class="text-lg font-bold text-white mb-4 flex items-center justify-between">
-                            <span>Connected Players</span>
-                            <span id="player-count-badge" class="text-xs bg-slate-700 px-2.5 py-1 rounded-full text-slate-300">1 / 8</span>
-                        </h3>
-                        <div id="player-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <!-- Players rendered dynamically -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                    <!-- Create Room Card -->
+                    <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xl mb-4">
+                                <i class="fa-solid fa-plus-circle"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-1">Create Match Room</h3>
+                            <p class="text-sm text-slate-400">Host a new match. Invite teammates using a unique 6-digit room code.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Difficulty</label>
+                                <select id="create-difficulty" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-500 text-slate-200">
+                                    <option value="medium">Standard English (Medium)</option>
+                                    <option value="easy">Simple Words (Easy)</option>
+                                    <option value="hard">Advanced Vocabulary (Hard)</option>
+                                </select>
+                            </div>
+                            <button onclick="app.createRoom()" class="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 text-slate-950 font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-cyan-500/20">
+                                <i class="fa-solid fa-bolt"></i> Create Room
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Host Controls Panel -->
-                    <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between space-y-6">
+                    <!-- Join Room Card -->
+                    <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6">
                         <div>
-                            <h3 class="text-lg font-bold text-white mb-2">Game Info</h3>
-                            <ul class="text-sm text-slate-400 space-y-2">
-                                <li class="flex items-center gap-2"><i class="fa-solid fa-stopwatch text-cyan-400"></i> Match Duration: <strong class="text-slate-200">60 Seconds</strong></li>
-                                <li class="flex items-center gap-2"><i class="fa-solid fa-sync text-emerald-400"></i> Real-time Network Sync</li>
-                                <li class="flex items-center gap-2"><i class="fa-solid fa-trophy text-amber-400"></i> Live Speed Leaderboard</li>
-                            </ul>
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center text-xl mb-4">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-1">Join Game Room</h3>
+                            <p class="text-sm text-slate-400">Enter an existing room code shared by your friend or colleague.</p>
                         </div>
-
-                        <div class="space-y-3">
-                            <div id="host-controls" class="space-y-2">
-                                <button onclick="app.startMatch()" class="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-extrabold py-3.5 px-6 rounded-xl transition shadow-lg shadow-emerald-500/20 active:scale-[0.98] flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-play"></i> Start 60s Match
-                                </button>
-                                <p class="text-xs text-center text-slate-400">Only the host can start the countdown.</p>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Room Code</label>
+                                <input type="text" id="join-room-code" placeholder="e.g. 8F2A91" maxlength="6" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 text-slate-200 uppercase tracking-widest font-mono text-center font-bold">
                             </div>
-                            <div id="client-waiting-msg" class="hidden text-center py-3 bg-slate-900/50 rounded-xl border border-slate-700/50">
-                                <i class="fa-solid fa-spinner fa-spin text-cyan-400 mr-2"></i>
-                                <span class="text-sm text-slate-300">Waiting for host to start match...</span>
-                            </div>
-                            <button onclick="app.leaveRoom()" class="w-full border border-slate-700 hover:bg-slate-700/50 text-slate-300 font-semibold py-2.5 px-4 rounded-xl text-sm transition">
-                                Leave Lobby
+                            <button onclick="app.joinRoom()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-purple-600/20">
+                                <i class="fa-solid fa-gamepad"></i> Join Room
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. COUNTDOWN OVERLAY / SCREEN -->
-            <div id="screen-countdown" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center">
-                <div class="text-slate-400 text-lg uppercase tracking-widest font-semibold mb-4">Get Ready!</div>
-                <div id="countdown-number" class="text-8xl sm:text-9xl font-black text-cyan-400 animate-bounce">3</div>
-                <p class="text-slate-500 text-sm mt-6">Position your fingers on the keyboard!</p>
+            <!-- 2. WAITING ROOM SCREEN -->
+            <div id="screen-room" class="hidden space-y-6">
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Multiplayer Match Lobby</h2>
+                        <p class="text-sm text-slate-400 mt-1">Share room code with players:</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-900 border border-slate-700 rounded-xl p-2 px-4">
+                        <span id="current-room-code" class="text-2xl font-mono font-black tracking-wider text-cyan-400">------</span>
+                        <button onclick="app.copyRoomCode()" class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 bg-slate-800/60 border border-slate-700 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center justify-between">
+                            <span>Connected Players</span>
+                            <span id="player-count-badge" class="text-xs bg-slate-700 px-2.5 py-1 rounded-full text-slate-300">1 / 8</span>
+                        </h3>
+                        <div id="player-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                    </div>
+                    <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between space-y-6">
+                        <div id="host-controls">
+                            <button onclick="app.startMultiplayerMatch()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3.5 px-6 rounded-xl transition shadow-lg">Start Match</button>
+                        </div>
+                        <div id="client-waiting-msg" class="hidden text-center py-3 bg-slate-900/50 rounded-xl border border-slate-700">
+                            <i class="fa-solid fa-spinner fa-spin text-cyan-400 mr-2"></i> Waiting for host...
+                        </div>
+                        <button onclick="app.showHome()" class="w-full border border-slate-700 hover:bg-slate-700/50 text-slate-300 font-semibold py-2.5 px-4 rounded-xl text-sm transition">Leave Lobby</button>
+                    </div>
+                </div>
             </div>
 
-            <!-- 4. ACTIVE GAMEPLAY SCREEN -->
+            <!-- 3. LEARN TYPING (TUTOR) SELECTION SCREEN -->
+            <div id="screen-learn-hub" class="hidden space-y-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-3xl font-black text-white">Typing Tutor & Lessons</h2>
+                        <p class="text-slate-400 text-sm">Master keys progressively using real dictionary words</p>
+                    </div>
+                    <button onclick="app.showHome()" class="text-xs bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-xl border border-slate-700 text-slate-300 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Modes</button>
+                </div>
+
+                <!-- Lessons Grid -->
+                <div id="lessons-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- 4. ACTIVE GAMEPLAY SCREEN (Solo, Learn, or Multiplayer) -->
             <div id="screen-game" class="hidden space-y-6">
                 <!-- Top Status Dashboard -->
+                <div class="flex items-center justify-between bg-slate-800/80 border border-slate-700 rounded-xl px-6 py-3">
+                    <button onclick="app.showHome()" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg text-slate-300 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Quit to Menu</button>
+                    <div id="game-mode-title" class="text-cyan-400 font-bold text-sm uppercase tracking-wider">Solo 60s Speed Test</div>
+                    <div id="lesson-keys-badge" class="hidden text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-lg font-mono">Keys: ASDF JKL;</div>
+                </div>
+
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                    <div class="bg-slate-800/90 border border-slate-700/80 rounded-xl p-3 sm:p-4 text-center">
-                        <div class="text-xs text-slate-400 uppercase font-semibold">Time Remaining</div>
+                    <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-3 sm:p-4 text-center">
+                        <div class="text-xs text-slate-400 uppercase font-semibold" id="timer-label">Time Remaining</div>
                         <div id="game-timer" class="text-2xl sm:text-3xl font-mono font-black text-amber-400 mt-1">60s</div>
                     </div>
-                    <div class="bg-slate-800/90 border border-slate-700/80 rounded-xl p-3 sm:p-4 text-center">
+                    <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-3 sm:p-4 text-center">
                         <div class="text-xs text-slate-400 uppercase font-semibold">Speed (WPM)</div>
                         <div id="game-wpm" class="text-2xl sm:text-3xl font-mono font-black text-cyan-400 mt-1">0</div>
                     </div>
-                    <div class="bg-slate-800/90 border border-slate-700/80 rounded-xl p-3 sm:p-4 text-center">
+                    <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-3 sm:p-4 text-center">
                         <div class="text-xs text-slate-400 uppercase font-semibold">Accuracy</div>
                         <div id="game-accuracy" class="text-2xl sm:text-3xl font-mono font-black text-emerald-400 mt-1">100%</div>
                     </div>
-                    <div class="bg-slate-800/90 border border-slate-700/80 rounded-xl p-3 sm:p-4 text-center">
-                        <div class="text-xs text-slate-400 uppercase font-semibold">Uncorrected Errors</div>
+                    <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-3 sm:p-4 text-center">
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Errors</div>
                         <div id="game-errors" class="text-2xl sm:text-3xl font-mono font-black text-rose-400 mt-1">0</div>
                     </div>
                 </div>
@@ -277,103 +317,62 @@
                     </div>
 
                     <!-- Target Text Display Window -->
-                    <div id="typing-text-display" class="font-mono text-lg sm:text-2xl leading-relaxed sm:leading-loose max-h-56 overflow-y-auto custom-scrollbar p-4 bg-slate-900/90 rounded-xl border border-slate-800 select-none tracking-wide text-slate-500 whitespace-pre-wrap break-words">
-                        <!-- Characters injected dynamically -->
-                    </div>
+                    <div id="typing-text-display" class="font-mono text-lg sm:text-2xl leading-relaxed sm:leading-loose max-h-56 overflow-y-auto custom-scrollbar p-4 bg-slate-900/90 rounded-xl border border-slate-800 select-none tracking-wide text-slate-500 whitespace-pre-wrap break-words"></div>
 
-                    <!-- Hidden/Focused Real Input Element -->
+                    <!-- Hidden Real Input -->
                     <input type="text" id="game-hidden-input" class="absolute opacity-0 pointer-events-none -z-10" autocomplete="off" autocapitalize="off" spellcheck="false">
 
-                    <!-- Tap to Focus Overlay for Touch Devices -->
+                    <!-- Focus Prompt -->
                     <div id="focus-prompt" onclick="app.focusTypingInput()" class="cursor-pointer bg-slate-900/80 hover:bg-slate-900 border border-cyan-500/30 rounded-xl py-3 px-4 text-center text-sm text-cyan-400 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-i-cursor animate-pulse"></i> Click or Tap here to focus keyboard input
                     </div>
                 </div>
 
-                <!-- Live Multi-Player Network Progress Dashboard -->
-                <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-5 space-y-4">
+                <!-- Multiplayer Live Racers Container (Hidden in Solo/Learn) -->
+                <div id="live-racers-wrapper" class="hidden bg-slate-800/60 border border-slate-700 rounded-2xl p-5 space-y-4">
                     <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-network-wired text-cyan-400"></i> Live Competitors Progress
                     </h3>
-                    <div id="live-racers-list" class="space-y-3">
-                        <!-- Competitor progress bars dynamically populated -->
-                    </div>
+                    <div id="live-racers-list" class="space-y-3"></div>
                 </div>
             </div>
 
-            <!-- 5. RESULTS & LEADERBOARD SCREEN -->
+            <!-- 5. RESULTS SCREEN -->
             <div id="screen-results" class="hidden space-y-8">
-                <!-- Winner Banner -->
                 <div class="bg-gradient-to-r from-cyan-900/40 via-purple-900/40 to-emerald-900/40 border border-slate-700 rounded-3xl p-8 text-center relative overflow-hidden">
-                    <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white">
-                        <i class="fa-solid fa-trophy"></i>
-                    </div>
                     <div class="inline-block p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-3xl mb-3">
-                        <i class="fa-solid fa-crown animate-bounce"></i>
+                        <i class="fa-solid fa-trophy animate-bounce"></i>
                     </div>
-                    <h2 class="text-3xl sm:text-5xl font-black text-white">Match Complete!</h2>
-                    <p id="winner-announcement" class="text-cyan-400 font-semibold mt-2 text-lg">Calculating results...</p>
+                    <h2 id="result-title" class="text-3xl sm:text-5xl font-black text-white">Match Complete!</h2>
+                    <p id="result-subtitle" class="text-cyan-400 font-semibold mt-2 text-lg">Great job improving your speed!</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Personal Performance Stats Card -->
                     <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between space-y-6">
                         <div>
                             <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2">Your Performance</h3>
                             <div class="space-y-4">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm text-slate-400">Net WPM</span>
-                                    <span id="res-net-wpm" class="text-2xl font-mono font-bold text-cyan-400">0</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm text-slate-400">Raw WPM</span>
-                                    <span id="res-raw-wpm" class="text-lg font-mono font-semibold text-slate-300">0</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm text-slate-400">Accuracy</span>
-                                    <span id="res-accuracy" class="text-2xl font-mono font-bold text-emerald-400">0%</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm text-slate-400">Characters Typed</span>
-                                    <span id="res-chars" class="text-sm font-mono text-slate-300">0 Total</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm text-slate-400">Total Errors</span>
-                                    <span id="res-errors" class="text-sm font-mono text-rose-400">0</span>
-                                </div>
+                                <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Net WPM</span><span id="res-net-wpm" class="text-2xl font-mono font-bold text-cyan-400">0</span></div>
+                                <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Raw WPM</span><span id="res-raw-wpm" class="text-lg font-mono font-semibold text-slate-300">0</span></div>
+                                <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Accuracy</span><span id="res-accuracy" class="text-2xl font-mono font-bold text-emerald-400">0%</span></div>
+                                <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Characters</span><span id="res-chars" class="text-sm font-mono text-slate-300">0 Total</span></div>
+                                <div class="flex justify-between items-center"><span class="text-sm text-slate-400">Errors</span><span id="res-errors" class="text-sm font-mono text-rose-400">0</span></div>
                             </div>
                         </div>
-
                         <div class="space-y-3 pt-4 border-t border-slate-700">
-                            <button onclick="app.returnToLobby()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition shadow-lg shadow-cyan-500/20 active:scale-[0.98]">
-                                Play Again in Lobby
-                            </button>
+                            <button id="res-primary-btn" onclick="app.restartCurrentMode()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition shadow-lg">Play Again</button>
+                            <button onclick="app.showHome()" class="w-full border border-slate-700 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 px-4 rounded-xl text-sm transition">Back to Main Menu</button>
                         </div>
                     </div>
 
-                    <!-- Final Room Leaderboard Table -->
-                    <div class="md:col-span-2 bg-slate-800/80 border border-slate-700 rounded-2xl p-6">
-                        <h3 class="text-lg font-bold text-white mb-4 flex items-center justify-between">
-                            <span>Room Final Leaderboard</span>
-                            <i class="fa-solid fa-list-ol text-cyan-400"></i>
-                        </h3>
-
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="text-xs uppercase text-slate-400 border-b border-slate-700">
-                                        <th class="py-3 px-2">Rank</th>
-                                        <th class="py-3 px-4">Player</th>
-                                        <th class="py-3 px-4 text-right">WPM</th>
-                                        <th class="py-3 px-4 text-right">Accuracy</th>
-                                        <th class="py-3 px-4 text-right">Progress</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="leaderboard-body" class="divide-y divide-slate-700/50 text-sm">
-                                    <!-- Dynamic Leaderboard Rows -->
-                                </tbody>
-                            </table>
+                    <!-- Multiplayer Leaderboard or Lesson Pass Panel -->
+                    <div id="results-secondary-panel" class="md:col-span-2 bg-slate-800/80 border border-slate-700 rounded-2xl p-6 flex flex-col justify-center items-center text-center space-y-4">
+                        <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-3xl">
+                            <i class="fa-solid fa-check"></i>
                         </div>
+                        <h3 class="text-2xl font-bold text-white">Lesson Completed!</h3>
+                        <p id="lesson-completion-msg" class="text-slate-400 max-w-md text-sm">You successfully mastered this key set with over 90% accuracy. Next lesson unlocked!</p>
+                        <button onclick="app.startLearnMode()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-sm">Choose Next Lesson</button>
                     </div>
                 </div>
             </div>
@@ -383,67 +382,103 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-        <p>TypeSpeed Multi &bull; Shared-Network Speed Typing Engine &bull; Powered by Firebase Realtime Sync</p>
+        <p>TypeMaster Pro &bull; Solo 60s Test &bull; Progressive Touch Typing Tutor &bull; Network Battle Arena</p>
     </footer>
 
-    <!-- Firebase SDK Imports -->
+    <!-- Firebase SDK Imports for Multiplayer -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Configuration setup
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'typespeed-app-default';
-const firebaseConfig = {
-  apiKey: "AIzaSyAisClxG32wAr4GC8Dr6AVDroiA2IW56LI",
-  authDomain: "typingcompetition-d09bd.firebaseapp.com",
-  projectId: "typingcompetition-d09bd",
-  storageBucket: "typingcompetition-d09bd.firebasestorage.app",
-  messagingSenderId: "943884726644",
-  appId: "1:943884726644:web:5a77528d7289a2f7027c21",
-  measurementId: "G-CGDHRVDYM5"
-};
+        const firebaseConfig = {
+          apiKey: "AIzaSyAisClxG32wAr4GC8Dr6AVDroiA2IW56LI",
+          authDomain: "typingcompetition-d09bd.firebaseapp.com",
+          projectId: "typingcompetition-d09bd",
+          storageBucket: "typingcompetition-d09bd.firebasestorage.app",
+          messagingSenderId: "943884726644",
+          appId: "1:943884726644:web:5a77528d7289a2f7027c21",
+          measurementId: "G-CGDHRVDYM5"
+        };
 
         const firebaseApp = initializeApp(firebaseConfig);
         const auth = getAuth(firebaseApp);
         const db = getFirestore(firebaseApp);
 
-        // Passports / Texts database presets
-        const TEXT_PRESETS = {
-            easy: [
-                "The quick brown fox jumps over the lazy dog. Simple words make typing fast and smooth for everyone involved.",
-                "Bright sunshine warmed the peaceful green valley as birds sang happy tunes high up in the leafy oak trees.",
-                "Always try your best in every game you play. Constant practice helps you improve speed and accuracy every day."
-            ],
-            medium: [
-                "Technology connects people across vast networks in real time. Building fast web applications requires solid architecture, instant data synchronization, and clean UI design for seamless user experience.",
-                "Keyboard mastery is an essential skill in modern computing. Developing muscular memory allows writers and developers to transpose thoughts into digital text effortlessly and accurately.",
-                "In competitive typing matches, balance is key. Pushing for high speed without keeping errors under control will severely penalize your final net words per minute calculation."
-            ],
-            hard: [
-                "Symphonic orchestrations, juxtaposed against avant-garde electronic rhythms, synthesize an auditory paradox; ubiquitous, yet singularly enigmatic to the discerning connoisseur.",
-                "Algorithmic efficiency is fundamentally evaluated using Big-O notation! Quantifying time-complexity (e.g., O(N log N)) ensures scalable data structures withstand high throughput requirements.",
-                "Exuberant acrobats performed mesmerizing maneuvers high above the audience, defying gravity with effortless grace, precision timing, and unwavering confidence."
-            ],
-            code: [
-                "const calculateWPM = (chars, errors, seconds) => Math.max(0, Math.round(((chars / 5) - errors) / (seconds / 60)));",
-                "function asyncSyncData(docRef, payload) { return updateDoc(docRef, { ...payload, updatedAt: Date.now() }); }",
-                "import React, { useState, useEffect } from 'react'; export default function App() { return <div className='container'>Hello</div>; }"
-            ]
-        };
+        // --- INFINITE DYNAMIC PARAGRAPH GENERATOR FOR SOLO & MULTIPLAYER ---
+        const DYNAMIC_WORD_POOL = [
+            "technology", "innovative", "software", "developer", "system", "architecture", "network", "synchronization",
+            "keyboard", "fingers", "muscle", "memory", "speed", "accuracy", "precision", "training", "progress",
+            "application", "interface", "database", "security", "framework", "performance", "optimization", "algorithm",
+            "javascript", "python", "typescript", "reactive", "asynchronous", "deployment", "production", "enterprise",
+            "project", "delivery", "collaboration", "strategy", "leadership", "analytics", "engineering", "solution",
+            "digital", "transformation", "cloud", "platform", "integration", "workflow", "automation", "intelligence"
+        ];
 
-        // Application State Controller
-        class TypingApp {
+        function generateRandomParagraph(wordCount = 35) {
+            let shuffled = [...DYNAMIC_WORD_POOL].sort(() => 0.5 - Math.random());
+            let selected = shuffled.slice(0, wordCount);
+            // Capitalize first word and add period at end
+            selected[0] = selected[0].charAt(0).toUpperCase() + selected[0].slice(1);
+            return selected.join(" ") + ".";
+        }
+
+        // --- PROGRESSIVE LESSONS FOR LEARN TYPING (REAL WORDS) ---
+        const LESSONS = [
+            {
+                id: 1,
+                title: "Lesson 1: Home Row (F & J)",
+                keys: "f j",
+                words: ["ff", "jj", "fjfj", "jffj", "fj", "jf"]
+            },
+            {
+                id: 2,
+                title: "Lesson 2: Home Row (D & K)",
+                keys: "d f j k",
+                words: ["dad", "fad", "fad", "add", "jdk", "kdf", "dad", "aff"]
+            },
+            {
+                id: 3,
+                title: "Lesson 3: Home Row (S & L)",
+                keys: "a s d f j k l ;",
+                words: ["sad", "lad", "all", "falls", "salad", "flask", "glass", "sdk", "jall"]
+            },
+            {
+                id: 4,
+                title: "Lesson 4: Top Row (E & I)",
+                keys: "e i + home row",
+                words: ["side", "ride", "file", "deal", "feel", "lead", "idle", "flee", "seed", "slide"]
+            },
+            {
+                id: 5,
+                title: "Lesson 5: Top Row (R & U)",
+                keys: "r u + previous",
+                words: ["rule", "true", "fear", "dare", "sure", "grid", "fluid", "guide", "brief", "fraud"]
+            },
+            {
+                id: 6,
+                title: "Lesson 6: Full Alphabet Mastery",
+                keys: "All Letters",
+                words: ["system", "coding", "keyboard", "practice", "master", "fluent", "velocity", "champion", "expert"]
+            }
+        ];
+
+        class TypeMasterApp {
             constructor() {
                 this.currentUser = null;
                 this.userId = null;
-                this.userName = 'Guest_' + Math.floor(1000 + Math.random() * 9000);
+                this.userName = 'Typist_' + Math.floor(1000 + Math.random() * 9000);
+
+                this.currentMode = 'home'; // 'home', 'solo', 'learn', 'multiplayer'
+                this.currentLessonId = 1;
+                this.unlockedLessonId = parseInt(localStorage.getItem('typemaster_unlocked') || '1');
 
                 this.currentRoomId = null;
                 this.roomData = null;
                 this.roomUnsubscribe = null;
 
-                // Local Match Typing State
+                // Typing State
                 this.targetText = "";
                 this.userInput = "";
                 this.matchTimer = 60;
@@ -459,20 +494,15 @@ const firebaseConfig = {
 
                 this.initAuth();
                 this.bindDOM();
+                this.renderLessons();
             }
 
-            // Initialize Firebase Auth
             async initAuth() {
                 try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
+                    await signInAnonymously(auth);
                 } catch (e) {
-                    console.warn("Auth initialization fallback:", e);
+                    console.warn("Auth warning:", e);
                 }
-
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         this.currentUser = user;
@@ -487,15 +517,12 @@ const firebaseConfig = {
                 const hiddenInput = document.getElementById('game-hidden-input');
                 hiddenInput.addEventListener('input', (e) => this.handleTypingInput(e));
                 
-                // Keep input focused on text click
                 document.getElementById('typing-text-display').addEventListener('click', () => {
                     this.focusTypingInput();
                 });
 
-                // Window resize or refocus
                 window.addEventListener('keydown', (e) => {
                     if (this.isMatchActive && document.activeElement !== hiddenInput) {
-                        // Ignore command keys
                         if (!e.ctrlKey && !e.altKey && !e.metaKey && e.key.length === 1) {
                             hiddenInput.focus();
                         }
@@ -511,96 +538,130 @@ const firebaseConfig = {
             showToast(message, type = 'info') {
                 const toastContainer = document.getElementById('toast-container');
                 const toast = document.createElement('div');
-                
                 const bgClass = type === 'error' ? 'bg-rose-900/90 border-rose-600 text-rose-100' :
                               type === 'success' ? 'bg-emerald-900/90 border-emerald-600 text-emerald-100' :
                               'bg-slate-800/90 border-slate-600 text-slate-100';
 
                 toast.className = `p-4 rounded-xl border shadow-xl backdrop-blur-md text-sm flex items-center justify-between transition-all duration-300 transform translate-y-2 opacity-0 ${bgClass}`;
-                toast.innerHTML = `
-                    <span>${message}</span>
-                    <button onclick="this.parentElement.remove()" class="ml-4 text-xs opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
-                `;
-
+                toast.innerHTML = `<span>${message}</span><button onclick="this.parentElement.remove()" class="ml-4 text-xs opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>`;
                 toastContainer.appendChild(toast);
-                setTimeout(() => {
-                    toast.classList.remove('translate-y-2', 'opacity-0');
-                }, 10);
-
-                setTimeout(() => {
-                    if (toast.parentElement) {
-                        toast.classList.add('opacity-0');
-                        setTimeout(() => toast.remove(), 300);
-                    }
-                }, 4000);
+                setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+                setTimeout(() => { if (toast.parentElement) { toast.classList.add('opacity-0'); setTimeout(() => toast.remove(), 300); } }, 4000);
             }
 
-            // Screen Navigation
             switchScreen(screenId) {
-                ['lobby', 'room', 'countdown', 'game', 'results'].forEach(id => {
+                ['home', 'multiplayer-hub', 'room', 'learn-hub', 'game', 'results'].forEach(id => {
                     const el = document.getElementById(`screen-${id}`);
-                    if (el) {
-                        if (id === screenId) {
-                            el.classList.remove('hidden');
-                        } else {
-                            el.classList.add('hidden');
-                        }
-                    }
+                    if (el) el.classList.toggle('hidden', id !== screenId);
                 });
             }
 
+            showHome() {
+                this.stopGameIntervals();
+                this.currentMode = 'home';
+                if (this.roomUnsubscribe) this.roomUnsubscribe();
+                this.switchScreen('home');
+            }
+
             updateName() {
-                const inputVal = document.getElementById('input-username').value.trim();
-                if (inputVal) {
-                    this.userName = inputVal;
+                const val = document.getElementById('input-username').value.trim();
+                if (val) {
+                    this.userName = val;
                     document.getElementById('display-user-name').innerText = this.userName;
                     this.showToast("Nickname updated!", "success");
-
-                    // If currently in a room, update in Firestore
-                    if (this.currentRoomId && this.userId) {
-                        const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', this.currentRoomId);
-                        updateDoc(roomRef, {
-                            [`players.${this.userId}.name`]: this.userName
-                        }).catch(err => console.error(err));
-                    }
                 }
             }
 
-            // --- FIREBASE MULTIPLAYER ROOM LOGIC ---
+            // --- MODE 1: SOLO 60S SPEED TEST ---
+            startSoloMode() {
+                this.stopGameIntervals();
+                this.currentMode = 'solo';
+                this.matchTimer = 60;
+                this.targetText = generateRandomParagraph(45); // Dynamic paragraph!
+                
+                document.getElementById('game-mode-title').innerText = "Solo 60s Speed Test";
+                document.getElementById('timer-label').innerText = "Time Remaining";
+                document.getElementById('game-timer').innerText = "60s";
+                document.getElementById('lesson-keys-badge').classList.add('hidden');
+                document.getElementById('live-racers-wrapper').classList.add('hidden');
+
+                this.initGameplaySession();
+            }
+
+            // --- MODE 2: LEARN TYPING TUTOR ---
+            startLearnMode() {
+                this.renderLessons();
+                this.switchScreen('learn-hub');
+            }
+
+            renderLessons() {
+                const container = document.getElementById('lessons-grid');
+                container.innerHTML = LESSONS.map(l => {
+                    const isUnlocked = l.id <= this.unlockedLessonId;
+                    return `
+                        <div class="bg-slate-800/80 border ${isUnlocked ? 'border-slate-700 hover:border-emerald-500 cursor-pointer' : 'border-slate-800 opacity-60'} rounded-2xl p-5 flex flex-col justify-between space-y-4 transition" ${isUnlocked ? `onclick="app.startLesson(${l.id})"` : ''}>
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold uppercase px-2 py-0.5 rounded ${isUnlocked ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-700 text-slate-400'}">Lesson ${l.id}</span>
+                                    ${!isUnlocked ? '<i class="fa-solid fa-lock text-slate-500"></i>' : '<i class="fa-solid fa-circle-check text-emerald-400"></i>'}
+                                </div>
+                                <h4 class="text-base font-bold text-white">${l.title}</h4>
+                                <p class="text-xs text-slate-400 font-mono mt-1">Keys: ${l.keys}</p>
+                            </div>
+                            <div class="text-xs text-emerald-400 font-semibold flex items-center gap-1">
+                                ${isUnlocked ? 'Start Lesson <i class="fa-solid fa-arrow-right ml-1"></i>' : 'Locked'}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            startLesson(lessonId) {
+                this.stopGameIntervals();
+                this.currentMode = 'learn';
+                this.currentLessonId = lessonId;
+                const lesson = LESSONS.find(l => l.id === lessonId);
+
+                // Build a continuous string of real words from lesson pool (approx 35 words)
+                let textArray = [];
+                for (let i = 0; i < 25; i++) {
+                    textArray.push(lesson.words[Math.floor(Math.random() * lesson.words.length)]);
+                }
+                this.targetText = textArray.join(" ");
+
+                document.getElementById('game-mode-title').innerText = lesson.title;
+                document.getElementById('timer-label').innerText = "Status";
+                document.getElementById('game-timer').innerText = "Practice";
+                const badge = document.getElementById('lesson-keys-badge');
+                badge.innerText = `Keys: ${lesson.keys}`;
+                badge.classList.remove('hidden');
+                document.getElementById('live-racers-wrapper').classList.add('hidden');
+
+                this.initGameplaySession(false); // No countdown timer for tutor mode, untimed practice until completion
+            }
+
+            // --- MODE 3: MULTIPLAYER NETWORK BATTLE ---
+            showMultiplayerLobby() {
+                this.switchScreen('multiplayer-hub');
+            }
 
             async createRoom() {
                 if (!this.userId) {
-                    this.showToast("Authenticating with network, please wait...", "error");
+                    this.showToast("Authenticating, please wait...", "error");
                     return;
                 }
-
                 const difficulty = document.getElementById('create-difficulty').value;
                 const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-                
-                // Pick a random text snippet based on difficulty
-                const pool = TEXT_PRESETS[difficulty] || TEXT_PRESETS.medium;
-                const selectedText = pool[Math.floor(Math.random() * pool.length)];
+                const selectedText = generateRandomParagraph(35);
 
                 const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomCode);
-
                 const newRoom = {
                     code: roomCode,
                     hostId: this.userId,
-                    difficulty: difficulty,
                     targetText: selectedText,
-                    status: 'waiting', // waiting, countdown, playing, finished
-                    startTime: null,
+                    status: 'waiting',
                     players: {
-                        [this.userId]: {
-                            id: this.userId,
-                            name: this.userName,
-                            isHost: true,
-                            wpm: 0,
-                            accuracy: 100,
-                            progress: 0,
-                            finished: false,
-                            updatedAt: Date.now()
-                        }
+                        [this.userId]: { id: this.userId, name: this.userName, isHost: true, wpm: 0, accuracy: 100, progress: 0, finished: false }
                     },
                     createdAt: Date.now()
                 };
@@ -611,175 +672,93 @@ const firebaseConfig = {
                     this.subscribeToRoom(roomCode);
                     this.showToast(`Room created: ${roomCode}`, "success");
                 } catch (e) {
-                    console.error("Error creating room:", e);
                     this.showToast("Failed to create room.", "error");
                 }
             }
 
             async joinRoom() {
-                if (!this.userId) return;
                 const inputCode = document.getElementById('join-room-code').value.trim().toUpperCase();
                 if (!inputCode || inputCode.length !== 6) {
-                    this.showToast("Please enter a valid 6-character room code.", "error");
+                    this.showToast("Enter a valid 6-character code.", "error");
                     return;
                 }
-
                 const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', inputCode);
                 try {
-                    const roomSnap = await getDoc(roomRef);
-                    if (!roomSnap.exists()) {
-                        this.showToast("Room not found! Check code.", "error");
+                    const snap = await getDoc(roomRef);
+                    if (!snap.exists()) {
+                        this.showToast("Room not found.", "error");
                         return;
                     }
-
-                    const data = roomSnap.data();
-                    if (data.status !== 'waiting') {
-                        this.showToast("Match already in progress or finished.", "error");
-                        return;
-                    }
-
-                    // Add current player
                     await updateDoc(roomRef, {
-                        [`players.${this.userId}`]: {
-                            id: this.userId,
-                            name: this.userName,
-                            isHost: false,
-                            wpm: 0,
-                            accuracy: 100,
-                            progress: 0,
-                            finished: false,
-                            updatedAt: Date.now()
-                        }
+                        [`players.${this.userId}`]: { id: this.userId, name: this.userName, isHost: false, wpm: 0, accuracy: 100, progress: 0, finished: false }
                     });
-
                     this.currentRoomId = inputCode;
                     this.subscribeToRoom(inputCode);
                     this.showToast(`Joined room ${inputCode}!`, "success");
                 } catch (e) {
-                    console.error("Error joining room:", e);
-                    this.showToast("Error connecting to room.", "error");
+                    this.showToast("Error joining room.", "error");
                 }
             }
 
             subscribeToRoom(roomId) {
                 if (this.roomUnsubscribe) this.roomUnsubscribe();
-
                 const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
                 
                 this.roomUnsubscribe = onSnapshot(roomRef, (snapshot) => {
                     if (!snapshot.exists()) {
-                        this.showToast("Room was closed by host.", "error");
-                        this.returnToLobby();
+                        this.showToast("Room closed.", "error");
+                        this.showHome();
                         return;
                     }
-
                     const data = snapshot.data();
                     this.roomData = data;
                     this.renderRoomUI(data);
 
-                    // Handle status transitions synchronized across clients
-                    if (data.status === 'countdown' && !this.isCountingDown) {
-                        this.handleSynchronizedCountdown(data.startTime);
-                    } else if (data.status === 'playing' && !this.isMatchActive && !this.isCountingDown) {
-                        this.startLocalMatch(data.targetText);
-                    } else if (data.status === 'finished' && this.isMatchActive) {
-                        this.endMatch();
+                    if (data.status === 'playing' && !this.isMatchActive) {
+                        this.currentMode = 'multiplayer';
+                        this.targetText = data.targetText;
+                        document.getElementById('game-mode-title').innerText = `Multiplayer Room: ${data.code}`;
+                        document.getElementById('timer-label').innerText = "Time Remaining";
+                        document.getElementById('game-timer').innerText = "60s";
+                        document.getElementById('lesson-keys-badge').classList.add('hidden');
+                        document.getElementById('live-racers-wrapper').classList.remove('hidden');
+                        this.initGameplaySession(true, 60);
                     }
-                }, (error) => {
-                    console.error("Room sync error:", error);
                 });
-
                 this.switchScreen('room');
             }
 
             renderRoomUI(data) {
                 document.getElementById('current-room-code').innerText = data.code;
-                document.getElementById('room-difficulty-tag').innerText = data.difficulty;
-
                 const playersArray = Object.values(data.players || {});
                 document.getElementById('player-count-badge').innerText = `${playersArray.length} / 8`;
-
-                const playersContainer = document.getElementById('player-list-container');
-                playersContainer.innerHTML = playersArray.map(p => `
-                    <div class="bg-slate-900/80 border ${p.id === this.userId ? 'border-cyan-500/60' : 'border-slate-700/80'} p-3 rounded-xl flex items-center justify-between">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 rounded-lg ${p.isHost ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-slate-800 text-slate-300'} flex items-center justify-center font-bold text-xs">
-                                ${p.isHost ? '<i class="fa-solid fa-crown"></i>' : '<i class="fa-solid fa-user"></i>'}
-                            </div>
-                            <div>
-                                <div class="text-sm font-semibold text-slate-200 flex items-center gap-1.5">
-                                    ${this.escapeHtml(p.name)}
-                                    ${p.id === this.userId ? '<span class="text-[10px] bg-cyan-500/20 text-cyan-400 px-1.5 py-0.2 rounded">(You)</span>' : ''}
-                                </div>
-                                <div class="text-xs text-slate-500">${p.isHost ? 'Host' : 'Ready'}</div>
-                            </div>
-                        </div>
+                
+                document.getElementById('player-list-container').innerHTML = playersArray.map(p => `
+                    <div class="bg-slate-900/80 border ${p.id === this.userId ? 'border-cyan-500/60' : 'border-slate-700'} p-3 rounded-xl flex items-center justify-between">
+                        <span class="text-sm font-semibold text-slate-200">${this.escapeHtml(p.name)} ${p.id === this.userId ? '(You)' : ''}</span>
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                     </div>
                 `).join('');
 
-                // Toggle host control visibility
                 const isHost = data.hostId === this.userId;
                 document.getElementById('host-controls').style.display = isHost ? 'block' : 'none';
                 document.getElementById('client-waiting-msg').style.display = !isHost ? 'block' : 'none';
 
-                // Update live racers in game screen
-                this.renderLiveRacers(playersArray);
-
-                // Update results screen if finished
                 if (data.status === 'finished') {
-                    this.renderLeaderboard(playersArray);
+                    this.renderMultiplayerLeaderboard(playersArray);
                 }
             }
 
-            async startMatch() {
+            async startMultiplayerMatch() {
                 if (!this.currentRoomId || !this.roomData) return;
-                if (this.roomData.hostId !== this.userId) return;
-
                 const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', this.currentRoomId);
-                const startTime = Date.now() + 3000; // 3 seconds countdown offset
-
-                try {
-                    await updateDoc(roomRef, {
-                        status: 'countdown',
-                        startTime: startTime
-                    });
-                } catch (e) {
-                    console.error("Error starting match:", e);
-                }
+                await updateDoc(roomRef, { status: 'playing', targetText: generateRandomParagraph(35) });
             }
 
-            handleSynchronizedCountdown(startTime) {
-                this.isCountingDown = true;
-                this.switchScreen('countdown');
-                const numEl = document.getElementById('countdown-number');
-
-                const interval = setInterval(() => {
-                    const remaining = Math.ceil((startTime - Date.now()) / 1000);
-                    if (remaining > 0) {
-                        numEl.innerText = remaining;
-                    } else {
-                        clearInterval(interval);
-                        numEl.innerText = "GO!";
-                        setTimeout(() => {
-                            this.isCountingDown = false;
-                            if (this.roomData && this.roomData.hostId === this.userId) {
-                                // Host transitions status to playing
-                                const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', this.currentRoomId);
-                                updateDoc(roomRef, { status: 'playing' }).catch(err => console.error(err));
-                            }
-                            this.startLocalMatch(this.roomData.targetText);
-                        }, 500);
-                    }
-                }, 200);
-            }
-
-            // --- MATCH PLAYBACK & TYPING LOGIC ---
-
-            startLocalMatch(text) {
-                this.targetText = text;
+            // --- UNIVERSAL GAMEPLAY SESSION CORE ---
+            initGameplaySession(hasTimer = true, defaultSeconds = 60) {
                 this.userInput = "";
-                this.matchTimer = 60;
+                this.matchTimer = defaultSeconds;
                 this.totalKeyStrokes = 0;
                 this.errorCount = 0;
                 this.uncorrectedErrors = 0;
@@ -788,27 +767,33 @@ const firebaseConfig = {
 
                 const hiddenInput = document.getElementById('game-hidden-input');
                 hiddenInput.value = "";
-                
+
                 this.switchScreen('game');
                 this.renderTypingDisplay();
                 this.focusTypingInput();
 
-                // Start timer
-                document.getElementById('game-timer').innerText = `${this.matchTimer}s`;
-                this.timerInterval = setInterval(() => {
-                    this.matchTimer--;
-                    document.getElementById('game-timer').innerText = `${this.matchTimer}s`;
+                if (hasTimer) {
+                    this.timerInterval = setInterval(() => {
+                        this.matchTimer--;
+                        document.getElementById('game-timer').innerText = `${this.matchTimer}s`;
+                        if (this.matchTimer <= 0) {
+                            clearInterval(this.timerInterval);
+                            this.endMatch();
+                        }
+                    }, 1000);
+                } else {
+                    document.getElementById('game-timer').innerText = "Practice";
+                }
 
-                    if (this.matchTimer <= 0) {
-                        clearInterval(this.timerInterval);
-                        this.endMatch();
-                    }
-                }, 1000);
+                if (this.currentMode === 'multiplayer') {
+                    this.syncInterval = setInterval(() => this.syncMultiplayerProgress(), 1000);
+                }
+            }
 
-                // Periodic progress cloud sync (every 1 sec)
-                this.syncInterval = setInterval(() => {
-                    this.syncProgressToCloud();
-                }, 1000);
+            stopGameIntervals() {
+                clearInterval(this.timerInterval);
+                clearInterval(this.syncInterval);
+                this.isMatchActive = false;
             }
 
             handleTypingInput(e) {
@@ -820,18 +805,14 @@ const firebaseConfig = {
 
                 if (val.length > prevLen) {
                     this.totalKeyStrokes++;
-                    // Check if typed character is wrong
-                    const typedChar = val[val.length - 1];
-                    const targetChar = this.targetText[val.length - 1];
-                    if (typedChar !== targetChar) {
+                    if (val[val.length - 1] !== this.targetText[val.length - 1]) {
                         this.errorCount++;
                     }
                 }
 
                 this.renderTypingDisplay();
-                this.calculateRealtimeMetrics();
+                this.calculateMetrics();
 
-                // If completed text early
                 if (val.length >= this.targetText.length) {
                     this.endMatch();
                 }
@@ -863,24 +844,17 @@ const firebaseConfig = {
                 display.innerHTML = html;
                 document.getElementById('game-progress-text').innerText = `${this.userInput.length} / ${this.targetText.length} chars`;
 
-                // Auto Scroll active text into view
                 const activeSpan = display.querySelector('.bg-cyan-500');
-                if (activeSpan) {
-                    activeSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+                if (activeSpan) activeSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
 
-            calculateRealtimeMetrics() {
-                const timeElapsedMin = Math.max(0.1, (60 - this.matchTimer) / 60);
+            calculateMetrics() {
+                const secondsPassed = this.currentMode === 'learn' ? Math.max(1, (Date.now() - this.startTime) / 1000) : Math.max(0.1, (60 - this.matchTimer));
+                const mins = secondsPassed / 60;
                 const typedWords = this.userInput.length / 5;
-                
-                // Net WPM = (All Typed Chars / 5 - Uncorrected Errors) / Minutes
-                const rawWpm = Math.round(typedWords / timeElapsedMin);
-                const netWpm = Math.max(0, Math.round((typedWords - this.uncorrectedErrors) / timeElapsedMin));
-                
-                const accuracy = this.totalKeyStrokes > 0 
-                    ? Math.max(0, Math.round(((this.totalKeyStrokes - this.errorCount) / this.totalKeyStrokes) * 100))
-                    : 100;
+                const rawWpm = Math.round(typedWords / mins);
+                const netWpm = Math.max(0, Math.round((typedWords - this.uncorrectedErrors) / mins));
+                const accuracy = this.totalKeyStrokes > 0 ? Math.max(0, Math.round(((this.totalKeyStrokes - this.errorCount) / this.totalKeyStrokes) * 100)) : 100;
 
                 document.getElementById('game-wpm').innerText = netWpm;
                 document.getElementById('game-accuracy').innerText = `${accuracy}%`;
@@ -889,165 +863,104 @@ const firebaseConfig = {
                 return { netWpm, rawWpm, accuracy };
             }
 
-            async syncProgressToCloud() {
+            async syncMultiplayerProgress() {
                 if (!this.currentRoomId || !this.userId) return;
-
-                const { netWpm, accuracy } = this.calculateRealtimeMetrics();
+                const { netWpm, accuracy } = this.calculateMetrics();
                 const progressPct = Math.min(100, Math.round((this.userInput.length / this.targetText.length) * 100));
 
                 const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', this.currentRoomId);
-                try {
-                    await updateDoc(roomRef, {
-                        [`players.${this.userId}.wpm`]: netWpm,
-                        [`players.${this.userId}.accuracy`]: accuracy,
-                        [`players.${this.userId}.progress`]: progressPct,
-                        [`players.${this.userId}.updatedAt`]: Date.now()
-                    });
-                } catch (e) {
-                    console.error("Cloud progress sync error:", e);
-                }
-            }
-
-            renderLiveRacers(players) {
-                const container = document.getElementById('live-racers-list');
-                if (!container) return;
-
-                container.innerHTML = players.map(p => `
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-xs text-slate-300">
-                            <span class="font-medium ${p.id === this.userId ? 'text-cyan-400 font-bold' : ''}">${this.escapeHtml(p.name)}</span>
-                            <span class="font-mono">${p.wpm || 0} WPM (${p.progress || 0}%)</span>
-                        </div>
-                        <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-700/60">
-                            <div class="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 transition-all duration-300" style="width: ${p.progress || 0}%"></div>
-                        </div>
-                    </div>
-                `).join('');
+                await updateDoc(roomRef, {
+                    [`players.${this.userId}.wpm`]: netWpm,
+                    [`players.${this.userId}.accuracy`]: accuracy,
+                    [`players.${this.userId}.progress`]: progressPct
+                }).catch(err => {});
             }
 
             async endMatch() {
                 if (!this.isMatchActive) return;
-                this.isMatchActive = false;
+                this.stopGameIntervals();
 
-                clearInterval(this.timerInterval);
-                clearInterval(this.syncInterval);
+                const { netWpm, rawWpm, accuracy } = this.calculateMetrics();
 
-                const { netWpm, rawWpm, accuracy } = this.calculateRealtimeMetrics();
-                const progressPct = Math.min(100, Math.round((this.userInput.length / this.targetText.length) * 100));
-
-                // Populate Local Performance Screen
                 document.getElementById('res-net-wpm').innerText = netWpm;
                 document.getElementById('res-raw-wpm').innerText = rawWpm;
                 document.getElementById('res-accuracy').innerText = `${accuracy}%`;
                 document.getElementById('res-chars').innerText = `${this.userInput.length} chars`;
                 document.getElementById('res-errors').innerText = this.errorCount;
 
-                // Sync final state to Firestore
-                if (this.currentRoomId && this.userId) {
-                    const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', this.currentRoomId);
-                    await updateDoc(roomRef, {
-                        [`players.${this.userId}.wpm`]: netWpm,
-                        [`players.${this.userId}.accuracy`]: accuracy,
-                        [`players.${this.userId}.progress`]: progressPct,
-                        [`players.${this.userId}.finished`]: true,
-                        status: 'finished'
-                    }).catch(err => console.error(err));
+                const secondaryPanel = document.getElementById('results-secondary-panel');
+
+                if (this.currentMode === 'learn') {
+                    document.getElementById('result-title').innerText = "Lesson Finished!";
+                    document.getElementById('result-subtitle').innerText = "Fantastic touch typing practice!";
+                    
+                    if (accuracy >= 85 && this.currentLessonId >= this.unlockedLessonId && this.currentLessonId < LESSONS.length) {
+                        this.unlockedLessonId = this.currentLessonId + 1;
+                        localStorage.setItem('typemaster_unlocked', this.unlockedLessonId);
+                        secondaryPanel.innerHTML = `
+                            <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-3xl"><i class="fa-solid fa-unlock"></i></div>
+                            <h3 class="text-2xl font-bold text-white">Next Lesson Unlocked!</h3>
+                            <p class="text-slate-400 text-sm">Passed with ${accuracy}% accuracy. Ready for the next key challenge?</p>
+                            <button onclick="app.startLesson(${this.unlockedLessonId})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-sm">Start Lesson ${this.unlockedLessonId}</button>
+                        `;
+                    } else {
+                        secondaryPanel.innerHTML = `
+                            <div class="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center text-3xl"><i class="fa-solid fa-rotate-right"></i></div>
+                            <h3 class="text-2xl font-bold text-white">Keep Practicing!</h3>
+                            <p class="text-slate-400 text-sm">Aim for 85%+ accuracy to unlock the next lesson tier.</p>
+                            <button onclick="app.startLesson(${this.currentLessonId})" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-sm">Retry Lesson</button>
+                        `;
+                    }
+                } else if (this.currentMode === 'solo') {
+                    document.getElementById('result-title').innerText = "Solo Test Complete!";
+                    document.getElementById('result-subtitle').innerText = "Here is your 60-second typing breakdown.";
+                    secondaryPanel.innerHTML = `
+                        <div class="w-16 h-16 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-3xl"><i class="fa-solid fa-chart-line"></i></div>
+                        <h3 class="text-2xl font-bold text-white">Speed Summary</h3>
+                        <p class="text-slate-400 text-sm">You typed at ${netWpm} Net WPM with ${accuracy}% precision on a randomized dynamic paragraph.</p>
+                        <button onclick="app.startSoloMode()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-sm">Run Another Solo Test</button>
+                    `;
+                } else if (this.currentMode === 'multiplayer') {
+                    document.getElementById('result-title').innerText = "Match Complete!";
+                    document.getElementById('result-subtitle').innerText = "Multiplayer room finalized.";
                 }
 
                 this.switchScreen('results');
-
-                // Fire Confetti!
-                try {
-                    confetti({
-                        particleCount: 100,
-                        spread: 70,
-                        origin: { y: 0.6 }
-                    });
-                } catch(e){}
+                try { confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); } catch(e){}
             }
 
-            renderLeaderboard(players) {
-                // Sort by WPM descending, then accuracy descending
-                const sorted = [...players].sort((a, b) => (b.wpm || 0) - (a.wpm || 0) || (b.accuracy || 0) - (a.accuracy || 0));
-
-                const winner = sorted[0];
-                if (winner) {
-                    document.getElementById('winner-announcement').innerText = `🏆 Winner: ${winner.name} with ${winner.wpm || 0} WPM!`;
-                }
-
-                const tbody = document.getElementById('leaderboard-body');
-                tbody.innerHTML = sorted.map((p, idx) => {
-                    const isMe = p.id === this.userId;
-                    const rankClass = idx === 0 ? 'text-amber-400 font-extrabold' :
-                                     idx === 1 ? 'text-slate-300 font-bold' :
-                                     idx === 2 ? 'text-amber-600 font-bold' : 'text-slate-400';
-
-                    return `
-                        <tr class="${isMe ? 'bg-cyan-500/10 font-semibold' : ''} hover:bg-slate-700/30 transition">
-                            <td class="py-3 px-2 ${rankClass}">#${idx + 1}</td>
-                            <td class="py-3 px-4 flex items-center gap-2">
-                                <span>${this.escapeHtml(p.name)}</span>
-                                ${isMe ? '<span class="text-[10px] bg-cyan-500/20 text-cyan-400 px-1.5 py-0.5 rounded">(You)</span>' : ''}
-                            </td>
-                            <td class="py-3 px-4 text-right font-mono font-bold text-cyan-400">${p.wpm || 0}</td>
-                            <td class="py-3 px-4 text-right font-mono text-emerald-400">${p.accuracy || 100}%</td>
-                            <td class="py-3 px-4 text-right font-mono text-slate-300">${p.progress || 0}%</td>
-                        </tr>
-                    `;
-                }).join('');
+            renderMultiplayerLeaderboard(players) {
+                const sorted = [...players].sort((a, b) => (b.wpm || 0) - (a.wpm || 0));
+                const secondaryPanel = document.getElementById('results-secondary-panel');
+                secondaryPanel.innerHTML = `
+                    <h3 class="text-lg font-bold text-white mb-2">Room Leaderboard</h3>
+                    <div class="w-full overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead><tr class="text-xs uppercase text-slate-400 border-b border-slate-700"><th class="py-2">Rank</th><th class="py-2">Player</th><th class="py-2 text-right">WPM</th><th class="py-2 text-right">Accuracy</th></tr></thead>
+                            <tbody class="divide-y divide-slate-700/50">${sorted.map((p, idx) => `<tr class="${p.id === this.userId ? 'text-cyan-400 font-bold' : 'text-slate-300'}"><td class="py-2">#${idx+1}</td><td class="py-2">${this.escapeHtml(p.name)}</td><td class="py-2 text-right font-mono">${p.wpm || 0}</td><td class="py-2 text-right font-mono">${p.accuracy || 100}%</td></tr>`).join('')}</tbody>
+                        </table>
+                    </div>
+                `;
             }
 
-            async returnToLobby() {
-                if (this.currentRoomId && this.userId) {
-                    const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', this.currentRoomId);
-                    await updateDoc(roomRef, {
-                        status: 'waiting',
-                        [`players.${this.userId}.wpm`]: 0,
-                        [`players.${this.userId}.accuracy`]: 100,
-                        [`players.${this.userId}.progress`]: 0,
-                        [`players.${this.userId}.finished`]: false
-                    }).catch(err => console.error(err));
-                }
-                this.switchScreen('room');
-            }
-
-            leaveRoom() {
-                if (this.roomUnsubscribe) this.roomUnsubscribe();
-                this.currentRoomId = null;
-                this.roomData = null;
-                this.switchScreen('lobby');
-                this.showToast("Left room lobby.");
-            }
-
-            showLobby() {
-                if (this.isMatchActive) {
-                    if (!confirm("Match in progress. Leave?")) return;
-                }
-                this.leaveRoom();
+            restartCurrentMode() {
+                if (this.currentMode === 'solo') this.startSoloMode();
+                else if (this.currentMode === 'learn') this.startLesson(this.currentLessonId);
+                else this.showHome();
             }
 
             copyRoomCode() {
                 if (!this.currentRoomId) return;
-                const tempInput = document.createElement('input');
-                tempInput.value = this.currentRoomId;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
+                navigator.clipboard.writeText(this.currentRoomId);
                 this.showToast("Room code copied to clipboard!", "success");
             }
 
             escapeHtml(str) {
-                return (str || '').replace(/[&<>"']/g, (m) => {
-                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
-                });
+                return (str || '').replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
             }
         }
 
-        // Initialize App on load
-        window.onload = () => {
-            window.app = new TypingApp();
-        };
+        window.onload = () => { window.app = new TypeMasterApp(); };
     </script>
 </body>
 </html>
