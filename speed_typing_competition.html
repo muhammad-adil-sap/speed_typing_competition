@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TypeMaster Pro - Multiplayer, Solo & Learn Typing</title>
+    <title>TypeMaster Pro - Single Player, Learn Typing & Network Arena</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -90,21 +90,37 @@
 
             <!-- Mode Switcher Nav -->
             <nav class="hidden md:flex items-center gap-2 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700/80 text-sm">
-                <button onclick="app.showHome()" id="nav-btn-home" class="px-4 py-1.5 rounded-lg font-medium transition text-cyan-400 bg-slate-700/60">Modes</button>
+                <button onclick="app.showHome()" class="px-4 py-1.5 rounded-lg font-medium transition text-cyan-400 bg-slate-700/60">Modes</button>
                 <button onclick="app.startSoloMode()" class="px-4 py-1.5 rounded-lg font-medium transition text-slate-300 hover:text-white">Solo 60s Test</button>
                 <button onclick="app.startLearnMode()" class="px-4 py-1.5 rounded-lg font-medium transition text-slate-300 hover:text-white">Learn Typing</button>
             </nav>
 
+            <!-- User Profile & Google Login Area -->
             <div class="flex items-center gap-3">
-                <div id="user-badge" class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 flex items-center gap-2 text-sm">
-                    <i class="fa-solid fa-user text-cyan-400"></i>
-                    <span id="display-user-name" class="font-semibold text-slate-200">Typist</span>
+                <div id="auth-state-container" class="flex items-center gap-2">
+                    <!-- Google Login Button -->
+                    <button id="btn-google-login" onclick="app.loginWithGoogle()" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-2 transition shadow-md">
+                        <i class="fa-brands fa-google text-rose-400"></i>
+                        <span>Sign in with Google</span>
+                    </button>
+
+                    <!-- Signed-in Profile Badge -->
+                    <div id="user-profile-badge" class="hidden px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 flex items-center gap-3 text-sm">
+                        <img id="user-avatar" src="" alt="Avatar" class="w-6 h-6 rounded-full border border-cyan-400 object-cover">
+                        <div class="flex flex-col text-left">
+                            <span id="display-user-name" class="font-semibold text-slate-200 text-xs sm:text-sm leading-none">Typist</span>
+                            <span id="display-user-high-wpm" class="text-[10px] text-cyan-400 font-mono mt-0.5">Best: 0 WPM</span>
+                        </div>
+                        <button onclick="app.logout()" title="Sign Out" class="ml-1 text-slate-400 hover:text-rose-400 text-xs transition">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Dynamic Content Wrapper -->
+    <!-- Main Content Wrapper -->
     <main class="flex-grow flex items-center justify-center p-4 sm:p-6 md:p-8">
         <div class="w-full max-w-5xl">
 
@@ -115,8 +131,24 @@
                         Choose Your <span class="text-cyan-400">Typing Journey</span>
                     </h2>
                     <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-                        Test your speed solo with infinite random paragraphs, master touch typing step-by-step, or battle friends on your network!
+                        Test your speed solo with dynamic paragraphs, master touch typing step-by-step, or battle friends on your network!
                     </p>
+                </div>
+
+                <!-- Google Account Sync Notification Banner -->
+                <div id="guest-sync-banner" class="max-w-2xl mx-auto bg-gradient-to-r from-slate-800/90 to-cyan-950/40 border border-cyan-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+                    <div class="flex items-center gap-3 text-left">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Save Progress to Google Account</h4>
+                            <p class="text-xs text-slate-400">Sign in with Google to retain your unlocked lessons and best WPM across all devices.</p>
+                        </div>
+                    </div>
+                    <button onclick="app.loginWithGoogle()" class="shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-md flex items-center gap-2">
+                        <i class="fa-brands fa-google"></i> Sign In Now
+                    </button>
                 </div>
 
                 <!-- Mode Cards Grid -->
@@ -162,16 +194,6 @@
                             <span>Multiplayer Lobby</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
                         </div>
                     </div>
-                </div>
-
-                <!-- Nickname customization block -->
-                <div class="max-w-md mx-auto bg-slate-800/40 border border-slate-800 rounded-xl p-4 flex items-center gap-3">
-                    <i class="fa-solid fa-user-gear text-slate-400"></i>
-                    <div class="flex-grow">
-                        <label class="block text-xs text-slate-400">Your Display Name</label>
-                        <input type="text" id="input-username" class="bg-transparent text-sm font-semibold text-cyan-400 focus:outline-none w-full" placeholder="Enter nickname...">
-                    </div>
-                    <button onclick="app.updateName()" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg font-medium transition">Save</button>
                 </div>
             </div>
 
@@ -265,7 +287,7 @@
                 </div>
             </div>
 
-            <!-- 3. LEARN TYPING (TUTOR) SELECTION SCREEN -->
+            <!-- 3. LEARN TYPING SELECTION SCREEN -->
             <div id="screen-learn-hub" class="hidden space-y-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -281,9 +303,8 @@
                 </div>
             </div>
 
-            <!-- 4. ACTIVE GAMEPLAY SCREEN (Solo, Learn, or Multiplayer) -->
+            <!-- 4. ACTIVE GAMEPLAY SCREEN -->
             <div id="screen-game" class="hidden space-y-6">
-                <!-- Top Status Dashboard -->
                 <div class="flex items-center justify-between bg-slate-800/80 border border-slate-700 rounded-xl px-6 py-3">
                     <button onclick="app.showHome()" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg text-slate-300 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Quit to Menu</button>
                     <div id="game-mode-title" class="text-cyan-400 font-bold text-sm uppercase tracking-wider">Solo 60s Speed Test</div>
@@ -309,26 +330,24 @@
                     </div>
                 </div>
 
-                <!-- Main Typing Interactive Display -->
+                <!-- Main Typing Display -->
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden">
                     <div class="flex items-center justify-between text-xs text-slate-400 border-b border-slate-700/60 pb-3">
                         <span><i class="fa-solid fa-keyboard mr-1 text-cyan-400"></i> Type the text below exactly as shown</span>
                         <span id="game-progress-text" class="font-mono">0 / 0 chars</span>
                     </div>
 
-                    <!-- Target Text Display Window -->
                     <div id="typing-text-display" class="font-mono text-lg sm:text-2xl leading-relaxed sm:leading-loose max-h-56 overflow-y-auto custom-scrollbar p-4 bg-slate-900/90 rounded-xl border border-slate-800 select-none tracking-wide text-slate-500 whitespace-pre-wrap break-words"></div>
 
                     <!-- Hidden Real Input -->
                     <input type="text" id="game-hidden-input" class="absolute opacity-0 pointer-events-none -z-10" autocomplete="off" autocapitalize="off" spellcheck="false">
 
-                    <!-- Focus Prompt -->
                     <div id="focus-prompt" onclick="app.focusTypingInput()" class="cursor-pointer bg-slate-900/80 hover:bg-slate-900 border border-cyan-500/30 rounded-xl py-3 px-4 text-center text-sm text-cyan-400 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-i-cursor animate-pulse"></i> Click or Tap here to focus keyboard input
                     </div>
                 </div>
 
-                <!-- Multiplayer Live Racers Container (Hidden in Solo/Learn) -->
+                <!-- Multiplayer Live Racers Container -->
                 <div id="live-racers-wrapper" class="hidden bg-slate-800/60 border border-slate-700 rounded-2xl p-5 space-y-4">
                     <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-network-wired text-cyan-400"></i> Live Competitors Progress
@@ -365,13 +384,12 @@
                         </div>
                     </div>
 
-                    <!-- Multiplayer Leaderboard or Lesson Pass Panel -->
                     <div id="results-secondary-panel" class="md:col-span-2 bg-slate-800/80 border border-slate-700 rounded-2xl p-6 flex flex-col justify-center items-center text-center space-y-4">
                         <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-3xl">
                             <i class="fa-solid fa-check"></i>
                         </div>
                         <h3 class="text-2xl font-bold text-white">Lesson Completed!</h3>
-                        <p id="lesson-completion-msg" class="text-slate-400 max-w-md text-sm">You successfully mastered this key set with over 90% accuracy. Next lesson unlocked!</p>
+                        <p id="lesson-completion-msg" class="text-slate-400 max-w-md text-sm">You successfully mastered this key set with over 85% accuracy. Next lesson unlocked!</p>
                         <button onclick="app.startLearnMode()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-sm">Choose Next Lesson</button>
                     </div>
                 </div>
@@ -382,14 +400,28 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-        <p>TypeMaster Pro &bull; Solo 60s Test &bull; Progressive Touch Typing Tutor &bull; Network Battle Arena</p>
+        <p>TypeMaster Pro &bull; Google Cloud Progress Sync &bull; Network Battle Arena</p>
     </footer>
 
-    <!-- Firebase SDK Imports for Multiplayer -->
+    <!-- Firebase SDK Imports -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { 
+            getAuth, 
+            signInAnonymously, 
+            GoogleAuthProvider, 
+            signInWithPopup, 
+            signOut, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            getDoc, 
+            setDoc, 
+            updateDoc, 
+            onSnapshot 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'typespeed-app-default';
         const firebaseConfig = {
@@ -405,8 +437,9 @@
         const firebaseApp = initializeApp(firebaseConfig);
         const auth = getAuth(firebaseApp);
         const db = getFirestore(firebaseApp);
+        const googleProvider = new GoogleAuthProvider();
 
-        // --- INFINITE DYNAMIC PARAGRAPH GENERATOR FOR SOLO & MULTIPLAYER ---
+        // Infinite dynamic paragraph generator
         const DYNAMIC_WORD_POOL = [
             "technology", "innovative", "software", "developer", "system", "architecture", "network", "synchronization",
             "keyboard", "fingers", "muscle", "memory", "speed", "accuracy", "precision", "training", "progress",
@@ -419,60 +452,31 @@
         function generateRandomParagraph(wordCount = 35) {
             let shuffled = [...DYNAMIC_WORD_POOL].sort(() => 0.5 - Math.random());
             let selected = shuffled.slice(0, wordCount);
-            // Capitalize first word and add period at end
             selected[0] = selected[0].charAt(0).toUpperCase() + selected[0].slice(1);
             return selected.join(" ") + ".";
         }
 
-        // --- PROGRESSIVE LESSONS FOR LEARN TYPING (REAL WORDS) ---
+        // Progressive Tutor Lessons
         const LESSONS = [
-            {
-                id: 1,
-                title: "Lesson 1: Home Row (F & J)",
-                keys: "f j",
-                words: ["ff", "jj", "fjfj", "jffj", "fj", "jf"]
-            },
-            {
-                id: 2,
-                title: "Lesson 2: Home Row (D & K)",
-                keys: "d f j k",
-                words: ["dad", "fad", "fad", "add", "jdk", "kdf", "dad", "aff"]
-            },
-            {
-                id: 3,
-                title: "Lesson 3: Home Row (S & L)",
-                keys: "a s d f j k l ;",
-                words: ["sad", "lad", "all", "falls", "salad", "flask", "glass", "sdk", "jall"]
-            },
-            {
-                id: 4,
-                title: "Lesson 4: Top Row (E & I)",
-                keys: "e i + home row",
-                words: ["side", "ride", "file", "deal", "feel", "lead", "idle", "flee", "seed", "slide"]
-            },
-            {
-                id: 5,
-                title: "Lesson 5: Top Row (R & U)",
-                keys: "r u + previous",
-                words: ["rule", "true", "fear", "dare", "sure", "grid", "fluid", "guide", "brief", "fraud"]
-            },
-            {
-                id: 6,
-                title: "Lesson 6: Full Alphabet Mastery",
-                keys: "All Letters",
-                words: ["system", "coding", "keyboard", "practice", "master", "fluent", "velocity", "champion", "expert"]
-            }
+            { id: 1, title: "Lesson 1: Home Row (F & J)", keys: "f j", words: ["ff", "jj", "fjfj", "jffj", "fj", "jf"] },
+            { id: 2, title: "Lesson 2: Home Row (D & K)", keys: "d f j k", words: ["dad", "fad", "add", "jdk", "kdf", "aff"] },
+            { id: 3, title: "Lesson 3: Home Row (S & L)", keys: "a s d f j k l ;", words: ["sad", "lad", "all", "falls", "salad", "flask", "glass"] },
+            { id: 4, title: "Lesson 4: Top Row (E & I)", keys: "e i + home row", words: ["side", "ride", "file", "deal", "feel", "lead", "idle", "seed", "slide"] },
+            { id: 5, title: "Lesson 5: Top Row (R & U)", keys: "r u + previous", words: ["rule", "true", "fear", "dare", "sure", "grid", "fluid", "guide", "brief"] },
+            { id: 6, title: "Lesson 6: Full Alphabet Mastery", keys: "All Letters", words: ["system", "coding", "keyboard", "practice", "master", "fluent", "velocity", "champion"] }
         ];
 
         class TypeMasterApp {
             constructor() {
                 this.currentUser = null;
                 this.userId = null;
-                this.userName = 'Typist_' + Math.floor(1000 + Math.random() * 9000);
+                this.userName = 'Typist';
+                this.isGoogleUser = false;
 
-                this.currentMode = 'home'; // 'home', 'solo', 'learn', 'multiplayer'
+                this.currentMode = 'home';
                 this.currentLessonId = 1;
-                this.unlockedLessonId = parseInt(localStorage.getItem('typemaster_unlocked') || '1');
+                this.unlockedLessonId = 1;
+                this.userHighWpm = 0;
 
                 this.currentRoomId = null;
                 this.roomData = null;
@@ -492,34 +496,128 @@
                 this.errorCount = 0;
                 this.uncorrectedErrors = 0;
 
-                this.initAuth();
+                this.initAuthObserver();
                 this.bindDOM();
-                this.renderLessons();
             }
 
-            async initAuth() {
-                try {
-                    await signInAnonymously(auth);
-                } catch (e) {
-                    console.warn("Auth warning:", e);
-                }
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
+            // --- GOOGLE AUTH & FIRESTORE PROGRESS SYNC ---
+            initAuthObserver() {
+                onAuthStateChanged(auth, async (user) => {
+                    if (user && !user.isAnonymous) {
+                        // Google Authenticated User
                         this.currentUser = user;
                         this.userId = user.uid;
+                        this.isGoogleUser = true;
+                        this.userName = user.displayName || 'Typist';
+
+                        // UI Updates for logged in user
+                        document.getElementById('btn-google-login').classList.add('hidden');
+                        document.getElementById('user-profile-badge').classList.remove('hidden');
+                        document.getElementById('user-profile-badge').classList.add('flex');
                         document.getElementById('display-user-name').innerText = this.userName;
-                        document.getElementById('input-username').value = this.userName;
+                        document.getElementById('user-avatar').src = user.photoURL || 'https://via.placeholder.com/40';
+                        document.getElementById('guest-sync-banner').classList.add('hidden');
+
+                        // Load User Cloud Progress
+                        await this.loadCloudUserData();
+                        this.showToast(`Welcome back, ${this.userName}! Progress synced.`, "success");
+                    } else {
+                        // Anonymous Guest User
+                        this.isGoogleUser = false;
+                        document.getElementById('btn-google-login').classList.remove('hidden');
+                        document.getElementById('user-profile-badge').classList.add('hidden');
+                        document.getElementById('user-profile-badge').classList.remove('flex');
+                        document.getElementById('guest-sync-banner').classList.remove('hidden');
+
+                        // Fallback to LocalStorage for guest
+                        this.unlockedLessonId = parseInt(localStorage.getItem('typemaster_unlocked') || '1');
+                        this.userHighWpm = parseInt(localStorage.getItem('typemaster_high_wpm') || '0');
+                        document.getElementById('display-user-high-wpm').innerText = `Best: ${this.userHighWpm} WPM`;
+
+                        if (!user) {
+                            signInAnonymously(auth).catch(e => console.warn(e));
+                        } else {
+                            this.currentUser = user;
+                            this.userId = user.uid;
+                        }
                     }
+                    this.renderLessons();
                 });
+            }
+
+            async loginWithGoogle() {
+                try {
+                    await signInWithPopup(auth, googleProvider);
+                } catch (error) {
+                    console.error("Google Auth Error:", error);
+                    this.showToast("Failed to sign in with Google.", "error");
+                }
+            }
+
+            async logout() {
+                try {
+                    await signOut(auth);
+                    this.showToast("Signed out successfully.");
+                } catch (error) {
+                    console.error("Sign out error:", error);
+                }
+            }
+
+            async loadCloudUserData() {
+                if (!this.userId) return;
+                const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', this.userId);
+                try {
+                    const snap = await getDoc(userDocRef);
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        this.unlockedLessonId = data.unlockedLessonId || 1;
+                        this.userHighWpm = data.highWpm || 0;
+                    } else {
+                        // Initial profile save for new Google user
+                        await setDoc(userDocRef, {
+                            name: this.userName,
+                            email: this.currentUser.email,
+                            unlockedLessonId: 1,
+                            highWpm: 0,
+                            createdAt: Date.now()
+                        });
+                        this.unlockedLessonId = 1;
+                        this.userHighWpm = 0;
+                    }
+                    document.getElementById('display-user-high-wpm').innerText = `Best: ${this.userHighWpm} WPM`;
+                    this.renderLessons();
+                } catch (e) {
+                    console.error("Cloud data fetch error:", e);
+                }
+            }
+
+            async saveProgressToCloud(newLessonUnlocked = null, newWpm = null) {
+                if (newWpm && newWpm > this.userHighWpm) {
+                    this.userHighWpm = newWpm;
+                    localStorage.setItem('typemaster_high_wpm', this.userHighWpm);
+                    document.getElementById('display-user-high-wpm').innerText = `Best: ${this.userHighWpm} WPM`;
+                }
+
+                if (newLessonUnlocked && newLessonUnlocked > this.unlockedLessonId) {
+                    this.unlockedLessonId = newLessonUnlocked;
+                    localStorage.setItem('typemaster_unlocked', this.unlockedLessonId);
+                }
+
+                // If user is logged in with Google, save to Firestore cloud database
+                if (this.isGoogleUser && this.userId) {
+                    const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', this.userId);
+                    await updateDoc(userDocRef, {
+                        unlockedLessonId: this.unlockedLessonId,
+                        highWpm: this.userHighWpm,
+                        lastActive: Date.now()
+                    }).catch(err => console.error("Cloud save failed:", err));
+                }
             }
 
             bindDOM() {
                 const hiddenInput = document.getElementById('game-hidden-input');
                 hiddenInput.addEventListener('input', (e) => this.handleTypingInput(e));
-                
-                document.getElementById('typing-text-display').addEventListener('click', () => {
-                    this.focusTypingInput();
-                });
+                document.getElementById('typing-text-display').addEventListener('click', () => this.focusTypingInput());
 
                 window.addEventListener('keydown', (e) => {
                     if (this.isMatchActive && document.activeElement !== hiddenInput) {
@@ -531,12 +629,11 @@
             }
 
             focusTypingInput() {
-                const hiddenInput = document.getElementById('game-hidden-input');
-                hiddenInput.focus();
+                document.getElementById('game-hidden-input').focus();
             }
 
             showToast(message, type = 'info') {
-                const toastContainer = document.getElementById('toast-container');
+                const container = document.getElementById('toast-container');
                 const toast = document.createElement('div');
                 const bgClass = type === 'error' ? 'bg-rose-900/90 border-rose-600 text-rose-100' :
                               type === 'success' ? 'bg-emerald-900/90 border-emerald-600 text-emerald-100' :
@@ -544,7 +641,7 @@
 
                 toast.className = `p-4 rounded-xl border shadow-xl backdrop-blur-md text-sm flex items-center justify-between transition-all duration-300 transform translate-y-2 opacity-0 ${bgClass}`;
                 toast.innerHTML = `<span>${message}</span><button onclick="this.parentElement.remove()" class="ml-4 text-xs opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>`;
-                toastContainer.appendChild(toast);
+                container.appendChild(toast);
                 setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
                 setTimeout(() => { if (toast.parentElement) { toast.classList.add('opacity-0'); setTimeout(() => toast.remove(), 300); } }, 4000);
             }
@@ -563,21 +660,12 @@
                 this.switchScreen('home');
             }
 
-            updateName() {
-                const val = document.getElementById('input-username').value.trim();
-                if (val) {
-                    this.userName = val;
-                    document.getElementById('display-user-name').innerText = this.userName;
-                    this.showToast("Nickname updated!", "success");
-                }
-            }
-
             // --- MODE 1: SOLO 60S SPEED TEST ---
             startSoloMode() {
                 this.stopGameIntervals();
                 this.currentMode = 'solo';
                 this.matchTimer = 60;
-                this.targetText = generateRandomParagraph(45); // Dynamic paragraph!
+                this.targetText = generateRandomParagraph(45);
                 
                 document.getElementById('game-mode-title').innerText = "Solo 60s Speed Test";
                 document.getElementById('timer-label').innerText = "Time Remaining";
@@ -596,6 +684,7 @@
 
             renderLessons() {
                 const container = document.getElementById('lessons-grid');
+                if (!container) return;
                 container.innerHTML = LESSONS.map(l => {
                     const isUnlocked = l.id <= this.unlockedLessonId;
                     return `
@@ -622,7 +711,6 @@
                 this.currentLessonId = lessonId;
                 const lesson = LESSONS.find(l => l.id === lessonId);
 
-                // Build a continuous string of real words from lesson pool (approx 35 words)
                 let textArray = [];
                 for (let i = 0; i < 25; i++) {
                     textArray.push(lesson.words[Math.floor(Math.random() * lesson.words.length)]);
@@ -637,7 +725,7 @@
                 badge.classList.remove('hidden');
                 document.getElementById('live-racers-wrapper').classList.add('hidden');
 
-                this.initGameplaySession(false); // No countdown timer for tutor mode, untimed practice until completion
+                this.initGameplaySession(false);
             }
 
             // --- MODE 3: MULTIPLAYER NETWORK BATTLE ---
@@ -646,10 +734,7 @@
             }
 
             async createRoom() {
-                if (!this.userId) {
-                    this.showToast("Authenticating, please wait...", "error");
-                    return;
-                }
+                if (!this.userId) return;
                 const difficulty = document.getElementById('create-difficulty').value;
                 const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
                 const selectedText = generateRandomParagraph(35);
@@ -894,14 +979,15 @@
                     document.getElementById('result-title').innerText = "Lesson Finished!";
                     document.getElementById('result-subtitle').innerText = "Fantastic touch typing practice!";
                     
-                    if (accuracy >= 85 && this.currentLessonId >= this.unlockedLessonId && this.currentLessonId < LESSONS.length) {
-                        this.unlockedLessonId = this.currentLessonId + 1;
-                        localStorage.setItem('typemaster_unlocked', this.unlockedLessonId);
+                    if (accuracy >= 85) {
+                        const nextLesson = this.currentLessonId + 1;
+                        await this.saveProgressToCloud(nextLesson, netWpm);
+                        
                         secondaryPanel.innerHTML = `
                             <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-3xl"><i class="fa-solid fa-unlock"></i></div>
                             <h3 class="text-2xl font-bold text-white">Next Lesson Unlocked!</h3>
-                            <p class="text-slate-400 text-sm">Passed with ${accuracy}% accuracy. Ready for the next key challenge?</p>
-                            <button onclick="app.startLesson(${this.unlockedLessonId})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-sm">Start Lesson ${this.unlockedLessonId}</button>
+                            <p class="text-slate-400 text-sm">Passed with ${accuracy}% accuracy. Progress saved to your account!</p>
+                            <button onclick="app.startLesson(${Math.min(nextLesson, LESSONS.length)})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-sm">Start Next Lesson</button>
                         `;
                     } else {
                         secondaryPanel.innerHTML = `
@@ -912,6 +998,7 @@
                         `;
                     }
                 } else if (this.currentMode === 'solo') {
+                    await this.saveProgressToCloud(null, netWpm);
                     document.getElementById('result-title').innerText = "Solo Test Complete!";
                     document.getElementById('result-subtitle').innerText = "Here is your 60-second typing breakdown.";
                     secondaryPanel.innerHTML = `
@@ -921,6 +1008,7 @@
                         <button onclick="app.startSoloMode()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-sm">Run Another Solo Test</button>
                     `;
                 } else if (this.currentMode === 'multiplayer') {
+                    await this.saveProgressToCloud(null, netWpm);
                     document.getElementById('result-title').innerText = "Match Complete!";
                     document.getElementById('result-subtitle').innerText = "Multiplayer room finalized.";
                 }
